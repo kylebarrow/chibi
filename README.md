@@ -4,8 +4,6 @@
 
 Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-If gently roasted some of your most used vanilla JavaScript, the r
-
 ### The sweet, juicy bits ###
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps for one less HTTP request (for every unnecessary HTTP request, an Internet troll is born).
 * Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari.
@@ -37,7 +35,7 @@ Chibi's supports standard CSS selectors but you can also pass in DOM elements di
 #### $().ready(handler) ####
 *Fires handler when the DOM is ready.*
 
-Use to fire a function when the DOM is ready. Including a selector wouldn't be smart, don't do it.
+Use to fire a function when the DOM is ready. Including a selector makes no sense for this method, don't do it.
 
 	$().ready(function(){
 		// Do awesome
@@ -54,7 +52,7 @@ or perhaps
 #### $().loaded(handler) ####
 *Fires handler when the page is loaded.*
 
-Use to fire a function when the page is loaded. Including a selector wouldn't be smart, don't do it.
+Use to fire a function when the page is loaded. Including a selector makes no sense for this method, don't do it.
 
 	function foo() {
 		// Do awesome
