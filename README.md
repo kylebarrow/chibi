@@ -237,7 +237,7 @@ or perhaps
 	</html>
 
 ### $(selector).ajax(url,*method*,*callback*,*nocache*) ###
-*Gets or optionally sets the value of a form element selector.*
+*Sends XHR.*
 
 	<!DOCTYPE html>
 	<html>
