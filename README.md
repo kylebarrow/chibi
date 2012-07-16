@@ -4,10 +4,13 @@
 
 Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
+Because you understand we are all born with a finite number of keystrokes, you've probably created snippets in your favorite text editor of your most used JavaScript methods. Chibi takes some of my snippets, melts them down and mixes  them with optimization rainbows to create a really light micro-framework.
+
 ### The sweet, juicy bits ###
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari.
 * Supports creaky old browsers like IE7. Chibi may also support IE6 but this hasn't been tested and I really don't care.
+* No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
@@ -25,7 +28,7 @@ Chibi's supports standard CSS selectors but you can also pass in DOM elements di
 ```js
 $("p").hide() // Hides all paragraphs
 $("#foo").show() // Shows element with id equal to "foo"
-$(".class").hide() // Hides elements with "class" CSS class
+$(".foo").hide() // Hides elements with "foo" CSS class
 ```
 
 ##### A DOM element selector, pointless
@@ -323,7 +326,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 
 **ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser.
 
-**ajax** supports JSON as a selector. This is useful for when you want to send data without using form field DOM elements.
+**ajax** supports JSON as a selector ({'name','value'}), useful for when you want to send data without using form field DOM elements.
 
 ```html
 <!DOCTYPE html>
