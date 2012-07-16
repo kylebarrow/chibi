@@ -2,10 +2,42 @@
 
 #### A tiny JavaScript micro-framework ####
 
-Documentation is still a work in progress...
+Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-### $().ready(handler) ###
+If gently roasted some of your most used vanilla JavaScript, the r
+
+### The sweet, juicy bits ###
+* Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps for one less HTTP request (for every unnecessary HTTP request, an Internet troll is born).
+* Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari.
+* Supports creaky old browsers like IE7. Chibi may also support IE6 but this hasn't been tested and I really don't care.
+* In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
+
+### The lumpy, chewy bits ###
+* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines.
+* Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
+
+### Using Chibi ###
+
+Chibi syntax is similar to that pioneered by jQuery: `$(selector).method()`. It intentionally uses the same `$` namespace as jQuery because micro-frameworks and grown-up frameworks should never mix.
+
+Chibi's supports standard CSS selectors but you can also pass in DOM elements directly:
+
+	// Standard CSS selector
+	$("p")
+
+	// A DOM element selector, pointless
+	$(document.getElementsByTagName('p'))
+
+	// A more interesting DOM element selector
+	$($('p').find('odd'))
+
+
+### Methods ###
+
+#### $().ready(handler) ####
 *Fires handler when the DOM is ready.*
+
+Use to fire a function when the DOM is ready. Including a selector wouldn't be smart, don't do it.
 
 	$().ready(function(){
 		// Do awesome
@@ -19,8 +51,10 @@ or perhaps
 
 	$().ready(foo);
 
-### $().loaded(handler) ###
+#### $().loaded(handler) ####
 *Fires handler when the page is loaded.*
+
+Use to fire a function when the page is loaded. Including a selector wouldn't be smart, don't do it.
 
 	function foo() {
 		// Do awesome
@@ -28,8 +62,12 @@ or perhaps
 
 	$().loaded(foo);
 
-### $(selector).find(*filter*) ###
-*Finds the selector. Returns the node element, an array of node elements or false. Optionally filter by first, last, odd or even.*
+#### $(selector).find(*filter*) ####
+*Finds the selector. Returns the DOM element, an array of DOM elements or false. Optionally filter by first, last, odd or even.*
+
+`find` will return either a single DOM element (only one matching DOM element found), array of DOM elements (more than one matching DOM element found), or false (no matching DOM element found).
+
+`find` can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE7 with weak CSS pseudo support.
 
 	<!DOCTYPE html>
 	<html>
@@ -51,7 +89,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).hide() ###
+#### $(selector).hide() ####
 *Hides the selector.*
 
 	<!DOCTYPE html>
@@ -69,8 +107,9 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).show() ###
+#### $(selector).show() ####
 *Shows the selector.*
+
 
 	<!DOCTYPE html>
 	<html>
@@ -90,7 +129,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).toggle() ###
+#### $(selector).toggle() ####
 *Toggles visibility of the selector.*
 
 	<!DOCTYPE html>
@@ -108,7 +147,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).remove() ###
+#### $(selector).remove() ####
 *Removes the selector.*
 
 	<!DOCTYPE html>
@@ -126,7 +165,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).css(property,*value*) ###
+#### $(selector).css(property,*value*) ####
 *Gets or optionally sets the CSS property for the selector.*
 
 	<!DOCTYPE html>
@@ -148,7 +187,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).cls(*class*,*replace/add/remove*) ###
+#### $(selector).cls(*class*,*replace/add/remove*) ####
 *Gets or optionally sets the class for a selector.*
 
 	<!DOCTYPE html>
@@ -177,7 +216,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).html(*html*,*before/after*) ###
+#### $(selector).html(*html*,*before/after*) ####
 *Gets or optionally sets the HTML for a selector. Optionally inserts HTML before or after the element.*
 
 	<!DOCTYPE html>
@@ -198,7 +237,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).attr(property,*value*) ###
+#### $(selector).attr(property,*value*) ####
 *Gets or optionally sets the property for a selector.*
 
 	<!DOCTYPE html>
@@ -217,7 +256,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).val(*replacement*) ###
+#### $(selector).val(*replacement*) ####
 *Gets or optionally sets the value of a form element selector.*
 
 	<!DOCTYPE html>
@@ -236,7 +275,7 @@ or perhaps
 	</body>
 	</html>
 
-### $(selector).ajax(url,*method*,*callback*,*nocache*) ###
+#### $(selector).ajax(url,*method*,*callback*,*nocache*) ####
 *Sends XHR.*
 
 	<!DOCTYPE html>
