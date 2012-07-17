@@ -207,7 +207,7 @@ p {display:none}
 <p class="bold">Bar</p>
 <script>
 	$('p').css('font-weight'); // returns the "font-weight" on all paragraph elements, as there is more than one paragraph element, an array ['normal','900']
-	$('p').css('color:red'); // sets all paragraph elements color to red
+	$('p').css('color','red'); // sets all paragraph elements color to red
 </script>
 </body>
 </html>
