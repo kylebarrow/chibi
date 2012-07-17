@@ -285,8 +285,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 <script src="chibi-min.js"></script>
 </head>
 <body>
-<p><a href="http://en.wikipedia.org/wiki/Foobar">Foo</p>
-<p>Bar</p>
+<p><a href="http://en.wikipedia.org/wiki/Foobar">Foobar</a></p>
 <script>
 	$('a').attr('href'); // returns the "href" property for all link elements, as there is only one, a string "http://en.wikipedia.org/wiki/Foobar"
 	$('a').attr('target','_blank'); // sets the "target" property for all link elements to "_blank"
