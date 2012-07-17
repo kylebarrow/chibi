@@ -4,7 +4,7 @@
 
 Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-Because you understand we are all born with a finite number of keystrokes, you've probably created snippets in your favorite text editor of your most used vanilla JavaScript. Chibi takes some of my snippets, melts them down and mixes  them with optimization rainbows to create a really light micro-framework.
+Because you understand we are all born with a finite number of keystrokes, you've probably also created snippets in your favorite text editor of your most used vanilla JavaScript. Chibi takes some of my snippets, melts them down and mixes  them with optimization rainbows to create a really light micro-framework.
 
 ### The sweet, juicy bits ###
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
