@@ -29,6 +29,7 @@ Chibi has been tested with and supports the following browsers:
 * Firefox 3 or higher
 * Firefox Mobile
 * Opera 10 or higher
+* Opera Mini
 * Opera Mobile 10 or higher
 * Safari 3 or higher
 * Safari Mobile 3 or higher
