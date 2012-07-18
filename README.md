@@ -1,4 +1,4 @@
-# Chibi v0.2
+# Chibi v0.3
 
 #### A tiny JavaScript micro-framework
 
@@ -8,7 +8,7 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 
 ### The sweet, juicy bits ###
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
-* Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari.
+* Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari (see Browser Support below).
 * Supports creaky old browsers like IE7. Chibi may also support IE6 but this hasn't been tested and I really don't care.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
@@ -16,6 +16,23 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 ### The lumpy, chewy bits
 * Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE7. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
+
+### Browser Support ####
+Chibi has been tested with and supports the following browsers:
+
+* Android Browser 2 or higher
+* Blackberry Browser 6 or higher
+* Chrome
+* Chrome Android
+* Internet Explorer 7 or higher
+* Internet Explorer Mobile 9 or higher
+* Firefox 3 or higher
+* Firefox Mobile
+* Opera 10 or higher
+* Opera Mobile 10 or higher
+* Safari 3 or higher
+* Safari Mobile 3 or higher
+* Symbian^3 Browser or higher
 
 ### Using Chibi
 

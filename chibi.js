@@ -1,4 +1,4 @@
-/* Chibi v0.2, Copyright (C) 2012 Kyle Barrow
+/* Chibi v0.3, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -8,8 +8,7 @@ You should have received a copy of the GNU General Public License along with thi
 (function() {
 	'use strict';
 
-	var nodes = [],
-		readyfn = [],
+	var readyfn = [],
 		loadedfn = [],
 		domready = false,
 		pageloaded = false,
@@ -61,7 +60,7 @@ You should have received a copy of the GNU General Public License along with thi
 	// Utility functions
 
 	// Loop through node array
-	function nodeLoop(fn) {
+	function nodeLoop(fn,nodes) {
 		// Good idea to walk up the DOM
 		var i = nodes.length;
 
@@ -85,7 +84,7 @@ You should have received a copy of the GNU General Public License along with thi
 	// Get nodes
 	function getNodes(selector) {
 
-		var nodelist = [];
+		var nodelist = [], nodes = [];
 
 		if (selector) {
 
@@ -140,12 +139,13 @@ You should have received a copy of the GNU General Public License along with thi
 		}
 
 		// Convert node list to array so find() results have full access to array methods
-		nodes = []; // reset node array
 
 		// Array.prototype.slice.call not supported in IE < 9 and often slower than loop anyway
 		for (var i = 0; i < nodelist.length; i++) {
 			nodes[i] = nodelist[i];
 		}
+
+		return nodes;
 	}
 
 	// Set CSS, important to wrap in try to prevent error thown on unsupported property
@@ -167,20 +167,20 @@ You should have received a copy of the GNU General Public License along with thi
 	}
 
 	// Serialize form & JSON values
-	function serializeData(node) {
+	function serializeData(nodes) {
 		var querystring = '',
 			subelm;
 
-		if (node.constructor === Object) { // Serialize JSON data
-			for (subelm in node) {
-				if (node.hasOwnProperty(subelm)) {
-					if (node[subelm].constructor === Array) {
-						for (var i = 0; i < node[subelm].length; i++) {
-							querystring += '&' + queryPair(subelm, node[subelm][i]);
+		if (nodes.constructor === Object) { // Serialize JSON data
+			for (subelm in nodes) {
+				if (nodes.hasOwnProperty(subelm)) {
+					if (nodes[subelm].constructor === Array) {
+						for (var i = 0; i < nodes[subelm].length; i++) {
+							querystring += '&' + queryPair(subelm, nodes[subelm][i]);
 						}
 					}
 					else {
-						querystring += '&' + queryPair(subelm, node[subelm]);
+						querystring += '&' + queryPair(subelm, nodes[subelm]);
 					}
 				}
 			}
@@ -224,7 +224,7 @@ You should have received a copy of the GNU General Public License along with thi
 						}
 					}
 				}
-			});
+			},nodes);
 		}
 
 		// Tidy up first &
@@ -236,7 +236,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 	function chibi(selector) {
 
-		getNodes(selector);
+		var nodes = getNodes(selector);
 
 		// Public functions
 		return {
@@ -288,7 +288,7 @@ You should have received a copy of the GNU General Public License along with thi
 			hide: function() {
 				nodeLoop(function(elm) {
 					elm.style.display = 'none';
-				});
+				},nodes);
 			},
 			// Show node
 			show: function() {
@@ -297,7 +297,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 					// For elements still hidden by style block
 					(computeStyle(elm, 'display') === 'none') ? elm.style.display = 'block' : 0;
-				});
+				},nodes);
 			},
 			// Toggle node display
 			toggle: function() {
@@ -314,15 +314,22 @@ You should have received a copy of the GNU General Public License along with thi
 						elm.style.display = 'none';
 					}
 
-				});
+				},nodes);
 			},
 			// Remove node
 			remove: function() {
 				var removed = nodes.length;
 
 				nodeLoop(function(elm) {
-					elm.parentNode.removeChild(elm);
-				});
+					// Catch error in unlikely case elm has been removed
+					try {
+						elm.parentNode.removeChild(elm);
+					}
+					catch (e) {}
+				},nodes);
+
+				// Clear nodes after remove
+				nodes = [];
 			},
 			// Get/Set CSS
 			css: function(property, value) {
@@ -331,7 +338,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 				nodeLoop(function(elm) {
 					(value) ? setCss(elm, property, value) : (elm.style[property]) ? values.push(elm.style[property]) : (computeStyle(elm,property))? values.push(computeStyle(elm,property)) : values.push(null);
-				});
+				},nodes);
 
 				// Get CSS property: return values
 				if (values.length > 0) {
@@ -376,7 +383,7 @@ You should have received a copy of the GNU General Public License along with thi
 					{
 						values.push(elm.className);
 					}
-				});
+				},nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -397,20 +404,22 @@ You should have received a copy of the GNU General Public License along with thi
 						tmpnodes.innerHTML = value;
 
 						while ((tmpnode = tmpnodes.lastChild)) {
-
-							if (location === 'before') {
-								elm.parentNode.insertBefore(tmpnode, elm);
+							// Catch error in unlikely case elm has been removed
+							try {
+								if (location === 'before') {
+									elm.parentNode.insertBefore(tmpnode, elm);
+								}
+								else if (location === 'after') {
+									elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
+								}
 							}
-							else if (location === 'after') {
-								elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
-							}
+							catch (e) {break;}
 						}
-
 					}
 					else {
 						(value) ? elm.innerHTML = value : values.push(elm.innerHTML);
 					}
-				});
+				},nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -438,7 +447,7 @@ You should have received a copy of the GNU General Public License along with thi
 								(value) ? elm.setAttribute(name, value) : elm.getAttribute(name) ? values.push(elm.getAttribute(name)) : values.push(null);
 						}
 					}
-				});
+				},nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -563,7 +572,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 					}
 
-				});
+				},nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -608,7 +617,6 @@ You should have received a copy of the GNU General Public License along with thi
 					};
 				}
 			}
-
 		};
 	}
 
