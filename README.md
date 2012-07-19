@@ -14,7 +14,7 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
-* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE7. Fortunately modern browser don't need this polyfill.
+* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
 ### Browser Support ####
