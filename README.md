@@ -26,13 +26,13 @@ Chibi has been tested with and supports the following browsers:
 * Chrome Android
 * Internet Explorer 6 or higher
 * Internet Explorer Mobile 9 or higher
-* Firefox 3 or higher
+* Firefox 3.5 or higher
 * Firefox Mobile
 * Opera 10 or higher
 * Opera Mini
 * Opera Mobile 10 or higher
-* Safari 3 or higher
-* Safari Mobile 3 or higher
+* Safari 3.2 or higher
+* Safari Mobile 3.2 or higher
 * Symbian^3 Browser or higher
 
 Chibi should also work with any other browser that supports `document.querySelectorAll()`.
