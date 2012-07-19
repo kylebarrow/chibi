@@ -1,4 +1,4 @@
-# Chibi v0.3
+# Chibi v0.4
 
 #### A tiny JavaScript micro-framework
 
@@ -9,7 +9,7 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 ### The sweet, juicy bits ###
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari (see Browser Support below).
-* Supports creaky old browsers like IE7. Chibi may also support IE6 but this hasn't been tested and I really don't care.
+* Supports creaky old browsers like IE6.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
@@ -20,11 +20,11 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 ### Browser Support ####
 Chibi has been tested with and supports the following browsers:
 
-* Android Browser 2 or higher
+* Android Browser 2.1 or higher
 * Blackberry Browser 6 or higher
 * Chrome
 * Chrome Android
-* Internet Explorer 7 or higher
+* Internet Explorer 6 or higher
 * Internet Explorer Mobile 9 or higher
 * Firefox 3 or higher
 * Firefox Mobile
@@ -34,6 +34,8 @@ Chibi has been tested with and supports the following browsers:
 * Safari 3 or higher
 * Safari Mobile 3 or higher
 * Symbian^3 Browser or higher
+
+Chibi should also work with any other browser that supports `document.querySelectorAll()`.
 
 ### Using Chibi
 
@@ -101,7 +103,7 @@ $().loaded(foo);
 
 **find** will return either a single DOM element (only one matching DOM element found), array of DOM elements (more than one matching DOM element found), or false (no matching DOM element found).
 
-**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE7 with weak CSS pseudo support.
+**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE6 with weak CSS pseudo support.
 
 ```html
 <!DOCTYPE html>
@@ -333,6 +335,32 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 <script>
 	$('input').val(); // returns the value for all input elements, as there is only one, a string "Foobar"
 	$('input').val('Foo Bar'); // sets the value for all input elements to "Foo Bar"
+</script>
+</body>
+</html>
+```
+
+#### $(selector).on(event,listener,*clear*)
+*Adds an event listener to the selector, optionally clears the event listener.*
+
+**on** adds an event listener to the selector. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	function foo() {
+		alert("I've been clicked");
+	}
+
+	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs
+	$('p').on('click',foo,true); // removes the 'foo' click event listener from all paragraphs
 </script>
 </body>
 </html>

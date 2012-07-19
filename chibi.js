@@ -1,10 +1,10 @@
-/* Chibi v0.4, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.4, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses>. */
+You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses>.*/
 (function() {
 	'use strict';
 
@@ -400,7 +400,7 @@ You should have received a copy of the GNU General Public License along with thi
 					if (location) {
 						// No insertAdjacentHTML support for FF < 8 and IE doesn't allow insertAdjacentHTML table manipulation, so use this instead
 						// Convert string to node. We can't innerHTML on a document fragment, hope document.parse() makes final spec
-						tmpnodes = document.createElement('div');
+						tmpnodes = d.createElement('div');
 						tmpnodes.innerHTML = value;
 
 						while ((tmpnode = tmpnodes.lastChild)) {
@@ -577,6 +577,20 @@ You should have received a copy of the GNU General Public License along with thi
 				if (values.length > 0) {
 					return returnValues(values);
 				}
+			},
+			// Event handler
+			on: function(event,fn,clear) {
+
+				(selector === w || selector === d)? nodes = [selector]: 0;
+
+				nodeLoop(function(elm) {
+					if (d.addEventListener) {
+						(clear)? elm.removeEventListener(event, fn, false): elm.addEventListener(event, fn, false);
+					}
+					else if (d.attachEvent) {
+						(clear)? elm.detachEvent('on'+event, fn): elm.attachEvent('on'+event, fn);
+					}
+				},nodes);
 			},
 			// Basic XHR 1, no file support. Shakes fist at IE
 			ajax: function(url, method, callback, nocache) {
