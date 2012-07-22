@@ -4,9 +4,10 @@
 
 Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-Because you understand we are all born with a finite number of keystrokes, you've probably also created snippets in your favorite text editor of your most used vanilla JavaScript. Chibi takes some of my snippets, melts them down and mixes  them with optimization rainbows to create a really light micro-framework.
+Working on something a wee bit more complex? Unlike grown-up, fat frameworks, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-framework that allows you to do awesome things, asshatory free.
 
-### The sweet, juicy bits ###
+### The sweet, juicy bits
+
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Internet Explorer, Firefox, Opera and Safari (see Browser Support below).
 * Supports creaky old browsers like IE6.
@@ -14,20 +15,22 @@ Because you understand we are all born with a finite number of keystrokes, you'v
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
+
 * Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
-### Browser Support ####
+### Browser Support
+
 Chibi has been tested with and supports the following browsers:
 
 * Android Browser 2.1 or higher
 * Blackberry Browser 6 or higher
 * Chrome
 * Chrome Android
-* Internet Explorer 6 or higher
-* Internet Explorer Mobile 9 or higher
 * Firefox 3.5 or higher
 * Firefox Mobile
+* Internet Explorer 6 or higher
+* Internet Explorer Mobile 9 or higher
 * Opera 10 or higher
 * Opera Mini
 * Opera Mobile 10 or higher
