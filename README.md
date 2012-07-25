@@ -236,12 +236,12 @@ p {display:none}
 </html>
 ```
 
-#### $(selector).cls(*classes*,*replace/add/remove/toggle/has*)
+#### $(selector).cls(*class*,*replace/add/remove/toggle/has*)
 *Gets or optionally sets the class for a selector.*
 
 **cls** with no arguments will return either a class string (only one matching DOM element found) or array of class strings (more than one matching DOM element found).
 
-If only the *classes* argument is specified, the default action is to replace any DOM element class with this class. If the *has* action is specified, Chibi returns true if the selector includes the *classes*.
+If only the *class* argument is specified, the default action is to replace any DOM element class with this class. If the *has* action is specified, Chibi returns true if the selector includes the *class*.
 
 ```html
 <!DOCTYPE html>
@@ -259,7 +259,7 @@ If only the *classes* argument is specified, the default action is to replace an
 <p class="mono">Bar</p>
 <script>
 	$('p').cls(); // returns classes set on all paragraph elements, as there is more than one paragraph element, an array ['', 'mono']
-	$('p').cls('mono','has'); // returns true if the paragraph element includes the classes, as there is more than one paragraph element, an array [false, true]
+	$('p').cls('mono','has'); // returns true if the paragraph element includes the 'mono' class, as there is more than one paragraph element, an array [false, true]
 	$('p').cls('mono','toggle'); // toggles the mono class on all paragraph elements
 	$('p').cls('red bold'); // sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
 	$('p').cls('red bold','replace'); // also sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
