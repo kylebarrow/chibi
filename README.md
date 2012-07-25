@@ -1,4 +1,4 @@
-# Chibi v0.4
+# Chibi v0.5
 
 #### A tiny JavaScript micro-framework
 
@@ -10,13 +10,13 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Ch
 
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
-* Supports creaky old browsers like IE6.
+* Supports creaky old browsers like IE7. Chibi most likely also supports IE6 but I really don't care.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
 
-* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
+* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE7. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
 ### Browser Support
@@ -29,7 +29,7 @@ Chibi has been tested with and supports the following browsers:
 * Chrome Android
 * Firefox 3.5 or higher
 * Firefox Mobile
-* Internet Explorer 6 or higher
+* Internet Explorer 7 or higher
 * Internet Explorer Mobile 9 or higher
 * Opera 10 or higher
 * Opera Mini
@@ -106,7 +106,7 @@ $().loaded(foo);
 
 **find** will return either a single DOM element (only one matching DOM element found), array of DOM elements (more than one matching DOM element found), or false (no matching DOM element found).
 
-**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE6 with weak CSS pseudo support.
+**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE7 with weak CSS pseudo support.
 
 ```html
 <!DOCTYPE html>
@@ -236,12 +236,12 @@ p {display:none}
 </html>
 ```
 
-#### $(selector).cls(*class*,*replace/add/remove*)
+#### $(selector).cls(*class(es)*,*replace/add/remove/toggle/has*)
 *Gets or optionally sets the class for a selector.*
 
 **cls** with no arguments will return either a class string (only one matching DOM element found) or array of class strings (more than one matching DOM element found).
 
-If only the *class* argument is specified, the default action is to replace any DOM element class with this class.
+If only the *class(es)* argument is specified, the default action is to replace any DOM element class with this class. If the *has* action is specified, Chibi returns true if the selector includes the *class(es)*.
 
 ```html
 <!DOCTYPE html>
@@ -258,7 +258,9 @@ If only the *class* argument is specified, the default action is to replace any 
 <p>Foo</p>
 <p class="mono">Bar</p>
 <script>
-	$('p').cls(); // returns classes set on all paragraph elements, as there is more than one paragraph element, an array ['','mono']
+	$('p').cls(); // returns classes set on all paragraph elements, as there is more than one paragraph element, an array ['', 'mono']
+	$('p').cls('mono','has'); // returns true if the paragraph element includes the class(es), as there is more than one paragraph element, an array [false, true]
+	$('p').cls('mono','toggle'); // toggles the mono class on all paragraph elements
 	$('p').cls('red bold'); // sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
 	$('p').cls('red bold','replace'); // also sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
 	$('p').cls('mono','add'); // adds the "mono" class to all paragraph elements
@@ -359,7 +361,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 <p>Bar</p>
 <script>
 	function foo() {
-		alert("I've been clicked");
+		// Do awesome
 	}
 
 	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs

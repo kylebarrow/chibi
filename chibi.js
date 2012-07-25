@@ -1,4 +1,4 @@
-/*Chibi v0.4, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.5, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -105,21 +105,15 @@ You should have received a copy of the GNU General Public License along with thi
 					// Polyfill querySelectorAll
 					d.querySelectorAll = function(selector) {
 
-						var style, head, allnodes, selectednodes = [];
+						var style, head = d.getElementsByTagName('head')[0], allnodes, selectednodes = [];
 
 						style = d.createElement('STYLE');
 						style.type = 'text/css';
 
-
 						if (style.styleSheet) {
 							style.styleSheet.cssText = selector + ' {a:b}';
 
-							if (d.getElementsByTagName('head').length === 0) {
-								head = d.createElement('head');
-								d.getElementsByTagName('html')[0].appendChild(head);
-							}
-
-							d.getElementsByTagName('head')[0].appendChild(style);
+							head.appendChild(style);
 
 							allnodes = d.getElementsByTagName('*');
 
@@ -127,7 +121,7 @@ You should have received a copy of the GNU General Public License along with thi
 								(computeStyle(allnodes[i], 'a') === 'b') ? selectednodes.push(allnodes[i]) : 0;
 							}
 
-							d.getElementsByTagName('head')[0].removeChild(style);
+							head.removeChild(style);
 						}
 
 						return selectednodes;
@@ -352,36 +346,60 @@ You should have received a copy of the GNU General Public License along with thi
 			},
 			// Get/Set/Add/Remove class
 			cls: function(classes, action) {
-				var values = [], classarray, search;
+				var values = [], classarray, classname, search, has;
 
 				if (classes) {
+					// Trim any whitespace
 					classarray = classes.split(' ');
 					action = action || 'replace';
 				}
 
 				nodeLoop(function(elm) {
+
+					classname = elm.className;
+
 					if (classes) {
 						switch (action) {
 							case 'add':
-								elm.className = elm.className + " " + classes;
-							break;
-
-							case 'remove':
-								for (var i = 0; i < classarray.length; i++) {
-									search = new RegExp(classarray[i], "g");
-									elm.className = elm.className.replace(search, '');
-								}
+								elm.className = classname + " " + classes;
 							break;
 
 							case 'replace':
 								elm.className = classes;
 							break;
 
+							case 'has':
+							case 'toggle':
+							case 'remove':
+								has = true;
+
+								for (var i = 0; i < classarray.length; i++) {
+
+									search = new RegExp('\\b'+classarray[i]+'\\b', 'g');
+
+									if (action === "has") {
+										if (!classname.match(search)) {
+											has = false;
+											break;
+										}
+									}
+									else if (action === "toggle") {
+										elm.className = (elm.className.match(search))? elm.className.replace(search, '') : elm.className + " " + classarray[i];
+									}
+									else { // Replace
+										elm.className = elm.className.replace(search, '');
+									}
+
+								}
+
+								(action === "has")? values.push(has) : 0;
+
+							break;
 						}
 					}
 					else
 					{
-						values.push(elm.className);
+						values.push(classname);
 					}
 				},nodes);
 
