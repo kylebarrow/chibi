@@ -2,7 +2,7 @@
 
 #### A tiny JavaScript micro-framework
 
-Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
+Think it's OK to serve up 90KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
 Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-framework that allows you to do awesome things, asshatory free.
 
