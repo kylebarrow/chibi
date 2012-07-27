@@ -1,4 +1,4 @@
-/*Chibi v0.5, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.6, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -69,10 +69,16 @@ You should have received a copy of the GNU General Public License along with thi
 		}
 	}
 
+
+	// Convert to camel case
+	function cssCamel(property) {
+		return property.replace(/-\w/g, function(txt){return txt.charAt(1).toUpperCase();});
+	}
+
 	// Get computed style
 	function computeStyle(elm, property) {
 		// IE, everything else or null
-		return (elm.currentStyle) ? elm.currentStyle[property] : (w.getComputedStyle) ? w.getComputedStyle(elm, null).getPropertyValue(property) : null;
+		return (elm.currentStyle) ? elm.currentStyle[cssCamel(property)] : (w.getComputedStyle) ? w.getComputedStyle(elm, null).getPropertyValue(property) : null;
 
 	}
 
@@ -145,7 +151,7 @@ You should have received a copy of the GNU General Public License along with thi
 	// Set CSS, important to wrap in try to prevent error thown on unsupported property
 	function setCss(elm, property, value) {
 		try {
-			elm.style[property] = value;
+			elm.style[cssCamel(property)] = value;
 		}
 		catch (e) {}
 	}
@@ -331,7 +337,7 @@ You should have received a copy of the GNU General Public License along with thi
 				var values = [];
 
 				nodeLoop(function(elm) {
-					(value) ? setCss(elm, property, value) : (elm.style[property]) ? values.push(elm.style[property]) : (computeStyle(elm,property))? values.push(computeStyle(elm,property)) : values.push(null);
+					(value) ? setCss(elm, property, value) : (elm.style[cssCamel(property)]) ? values.push(elm.style[cssCamel(property)]) : (computeStyle(elm,property))? values.push(computeStyle(elm,property)) : values.push(null);
 				},nodes);
 
 				// Get CSS property: return values

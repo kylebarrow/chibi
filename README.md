@@ -1,8 +1,8 @@
-# Chibi v0.5
+# Chibi v0.6
 
 #### A tiny JavaScript micro-framework
 
-Think it's OK to serve up 90KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
+Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
 Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-framework that allows you to do awesome things, asshatory free.
 
@@ -10,13 +10,13 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Ch
 
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
-* Supports creaky old browsers like IE7. Chibi most likely also supports IE6 but I really don't care.
+* Supports creaky old browsers like IE6.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
 
-* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE7. Fortunately modern browser don't need this polyfill.
+* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
 ### Browser Support
@@ -29,7 +29,7 @@ Chibi has been tested with and supports the following browsers:
 * Chrome Android
 * Firefox 3.5 or higher
 * Firefox Mobile
-* Internet Explorer 7 or higher
+* Internet Explorer 6 or higher
 * Internet Explorer Mobile 9 or higher
 * Opera 10 or higher
 * Opera Mini
@@ -106,7 +106,7 @@ $().loaded(foo);
 
 **find** will return either a single DOM element (only one matching DOM element found), array of DOM elements (more than one matching DOM element found), or false (no matching DOM element found).
 
-**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE7 with weak CSS pseudo support.
+**find** can optionally filter results by first, last, odd and even, useful when working with crappy browsers like IE6 with weak CSS pseudo support.
 
 ```html
 <!DOCTYPE html>
