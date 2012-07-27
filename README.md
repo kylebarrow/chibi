@@ -212,7 +212,7 @@ p {display:none}
 #### $(selector).css(property,*value*)
 *Gets or optionally sets the CSS property for the selector.*
 
-**css** with no *value* will return either a CSS property string (only one matching DOM element found) or array of CSS property strings (more than one matching DOM element found).
+**css** with no *value* will return either a CSS property string (only one matching DOM element found) or array of CSS property strings (more than one matching DOM element found). **css** will return the computed property value if the property isn't explicitly set which can vary between browsers. For example, an element with no explicit font weight will return 'normal' in Opera and Webkit browsers but '400' in Firefox and Internet Explorer browsers.
 
 *value* will set the value of the CSS property for all matching DOM elements.
 
