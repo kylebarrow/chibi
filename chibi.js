@@ -1,4 +1,4 @@
-/*Chibi v0.8, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.9, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -139,13 +139,18 @@ You should have received a copy of the GNU General Public License along with thi
 			}
 		}
 
-		// Convert node list to array so results have full access to array methods
-		// Array.prototype.slice.call not supported in IE < 9 and often slower than loop anyway
-		for (var i = 0; i < nodelist.length; i++) {
-			nodes[i] = nodelist[i];
+		if(json) {
+			nodes = nodelist;
+		}
+		else {
+			// Convert node list to array so results have full access to array methods
+			// Array.prototype.slice.call not supported in IE < 9 and often slower than loop anyway
+			for (var i = 0; i < nodelist.length; i++) {
+				nodes[i] = nodelist[i];
+			}
 		}
 
-		return (json) ? nodelist : nodes;
+		return nodes;
 	}
 
 	// Set CSS, important to wrap in try to prevent error thown on unsupported property
@@ -254,6 +259,14 @@ You should have received a copy of the GNU General Public License along with thi
 			loaded: function(fn) {
 				if (fn) {
 					(pageloaded) ? fn() : loadedfn.push(fn);
+				}
+			},
+			// Executes a function on nodes
+			loop: function(fn) {
+				if (typeof fn === "function") {
+					nodeLoop(function(elm) {
+						fn(elm);
+					},nodes);
 				}
 			},
 			// Find nodes
@@ -597,10 +610,10 @@ You should have received a copy of the GNU General Public License along with thi
 
 				nodeLoop(function(elm) {
 					if (d.addEventListener) {
-						(clear)? elm.removeEventListener(event, fn, false): elm.addEventListener(event, fn, false);
+						(clear)? elm.removeEventListener(event, fn, false) : elm.addEventListener(event, fn, false);
 					}
 					else if (d.attachEvent) {
-						(clear)? elm.detachEvent('on'+event, fn): elm.attachEvent('on'+event, fn);
+						(clear)? elm.detachEvent('on'+event, fn) : elm.attachEvent('on'+event, fn);
 					}
 				},nodes);
 			},
@@ -609,6 +622,7 @@ You should have received a copy of the GNU General Public License along with thi
 				var xhr,
 					method = method || 'GET',
 					query = serializeData(nodes),
+					querystart = (url.indexOf('?') === -1) ? '?' : '&',
 					timestamp = '_ts=' + (+new Date());
 
 				if (w.XMLHttpRequest) {
@@ -621,7 +635,8 @@ You should have received a copy of the GNU General Public License along with thi
 				if (xhr) {
 					method = method.toUpperCase();
 
-					url = (nocache) ? (method === 'POST') ? url + '?' + timestamp : url + '?' + query + '&' + timestamp : (method === 'POST') ? url : url + '?' + query;
+					(method === 'GET') ? url += querystart + query : 0;
+					(nocache) ? (method === 'POST') ? url += querystart + timestamp : url += '&' + timestamp : 0;
 
 					// Douglas Crockford: "Synchronous programming is disrespectful and should not be employed in applications which are used by people"
 					xhr.open(method, url, true);

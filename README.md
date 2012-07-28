@@ -1,4 +1,4 @@
-# Chibi v0.8
+# Chibi v0.9
 
 #### A tiny JavaScript micro-framework
 
@@ -130,6 +130,30 @@ $().loaded(foo);
 </body>
 </html>
 ```
+
+#### $(selector).loop(function)
+*Executes a function on the selector*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	function foo(elm) {
+		elm.style.color = "red";
+	}
+
+    $('p').loop(foo); // Executes the foo function (sets the element style color to red) on all paragraph elements
+</script>
+</body>
+</html>
+```
+
 #### $(selector).hide()
 *Hides the selector.*
 
