@@ -1,4 +1,4 @@
-/*Chibi v0.6, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.7, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -72,7 +72,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 	// Convert to camel case
 	function cssCamel(property) {
-		return property.replace(/-\w/g, function(txt){return txt.charAt(1).toUpperCase();});
+		return property.replace(/-\w/g, function(result){return result.charAt(1).toUpperCase();});
 	}
 
 	// Get computed style
@@ -90,7 +90,7 @@ You should have received a copy of the GNU General Public License along with thi
 	// Get nodes
 	function getNodes(selector) {
 
-		var nodelist = [], nodes = [];
+		var nodelist = [], nodes = [], json = false;
 
 		if (selector) {
 
@@ -100,6 +100,7 @@ You should have received a copy of the GNU General Public License along with thi
 			}
 			// JSON, document object or node list, would prefer to use (selector instanceof NodeList) but no IE support
 			else if (typeof selector === 'object' || (typeof selector.length === 'number' && typeof selector.item === 'function')) {
+				json = true;
 				nodelist = selector;
 			}
 			else if (typeof selector === 'string') {
@@ -138,14 +139,13 @@ You should have received a copy of the GNU General Public License along with thi
 			}
 		}
 
-		// Convert node list to array so find() results have full access to array methods
-
+		// Convert node list to array so results have full access to array methods
 		// Array.prototype.slice.call not supported in IE < 9 and often slower than loop anyway
 		for (var i = 0; i < nodelist.length; i++) {
 			nodes[i] = nodelist[i];
 		}
 
-		return nodes;
+		return (json) ? nodelist : nodes;
 	}
 
 	// Set CSS, important to wrap in try to prevent error thown on unsupported property
@@ -156,7 +156,15 @@ You should have received a copy of the GNU General Public License along with thi
 		catch (e) {}
 	}
 
-	// Handle standard function value returns
+	// Show CSS
+	function showCss(elm) {
+		elm.style.display = '';
+
+		// For elements still hidden by style block
+		(computeStyle(elm, 'display') === 'none') ? elm.style.display = 'block' : 0;
+	}
+
+	// Handle standard method value returns
 	function returnValues(values) {
 		values = values.reverse();
 
@@ -196,11 +204,9 @@ You should have received a copy of the GNU General Public License along with thi
 						if (!subelm.disabled) {
 							switch (subelm.type) {
 								// Ignore buttons, unsupported XHR 1 form fields
-								case 'button':
-								case 'image':
-								case 'file':
-								case 'submit':
-								case 'reset':
+								case 'text':
+								case 'textarea':
+									querystring += '&' + queryPair(subelm.name, subelm.value);
 								break;
 
 								case 'select-one':
@@ -217,21 +223,14 @@ You should have received a copy of the GNU General Public License along with thi
 								case 'radio':
 									(subelm.checked) ? querystring += '&' + queryPair(subelm.name, subelm.value) : 0;
 								break;
-
-								default:
-									querystring += '&' + queryPair(subelm.name, subelm.value);
 							}
 						}
 					}
 				}
 			},nodes);
 		}
-
 		// Tidy up first &
-		(querystring.length > 0) ? querystring = querystring.substring(1) : 0;
-
-		return querystring;
-
+		return (querystring.length > 0) ? querystring.substring(1) : '';
 	}
 
 	function chibi(selector) {
@@ -267,14 +266,8 @@ You should have received a copy of the GNU General Public License along with thi
 						break;
 
 						case 'odd':
-							for (var i = 0; i < nodes.length; i += 2) {
-								temp.push(nodes[i]);
-							}
-							nodes = temp;
-						break;
-
 						case 'even':
-							for (var i = 1; i < nodes.length; i += 2) {
+							for (var i = (filter === "odd") ? 0 : 1; i < nodes.length; i += 2) {
 								temp.push(nodes[i]);
 							}
 							nodes = temp;
@@ -293,10 +286,7 @@ You should have received a copy of the GNU General Public License along with thi
 			// Show node
 			show: function() {
 				nodeLoop(function(elm) {
-					elm.style.display = '';
-
-					// For elements still hidden by style block
-					(computeStyle(elm, 'display') === 'none') ? elm.style.display = 'block' : 0;
+					showCss(elm);
 				},nodes);
 			},
 			// Toggle node display
@@ -305,10 +295,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 					// computeStyle instead of style.display == 'none' catches elements that are hidden via style block
 					if (computeStyle(elm, 'display') === 'none') {
-						elm.style.display = '';
-
-						// For elements still hidden by style block
-						(computeStyle(elm, 'display') === 'none') ? elm.style.display = 'block' : 0;
+						showCss(elm);
 					}
 					else {
 						elm.style.display = 'none';
@@ -342,12 +329,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 				// Get CSS property: return values
 				if (values.length > 0) {
-					values = values.reverse();
-
-					// Return string for singles
-					(values.length === 1) ? values = values[0] : 0;
-
-					return values;
+					return returnValues(values);
 				}
 			},
 			// Get/Set/Add/Remove class
@@ -392,7 +374,7 @@ You should have received a copy of the GNU General Public License along with thi
 									else if (action === "toggle") {
 										elm.className = (elm.className.match(search))? elm.className.replace(search, '') : elm.className + " " + classarray[i];
 									}
-									else { // Replace
+									else { // replace
 										elm.className = elm.className.replace(search, '');
 									}
 
@@ -423,7 +405,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 					if (location) {
 						// No insertAdjacentHTML support for FF < 8 and IE doesn't allow insertAdjacentHTML table manipulation, so use this instead
-						// Convert string to node. We can't innerHTML on a document fragment, hope document.parse() makes final spec
+						// Convert string to node. We can't innerHTML on a document fragment
 						tmpnodes = d.createElement('div');
 						tmpnodes.innerHTML = value;
 
