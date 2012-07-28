@@ -1,4 +1,4 @@
-/*Chibi v0.7, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.8, Copyright (C) 2012 Kyle Barrow
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
 
@@ -204,9 +204,11 @@ You should have received a copy of the GNU General Public License along with thi
 						if (!subelm.disabled) {
 							switch (subelm.type) {
 								// Ignore buttons, unsupported XHR 1 form fields
-								case 'text':
-								case 'textarea':
-									querystring += '&' + queryPair(subelm.name, subelm.value);
+								case 'button':
+								case 'image':
+								case 'file':
+								case 'submit':
+								case 'reset':
 								break;
 
 								case 'select-one':
@@ -223,6 +225,9 @@ You should have received a copy of the GNU General Public License along with thi
 								case 'radio':
 									(subelm.checked) ? querystring += '&' + queryPair(subelm.name, subelm.value) : 0;
 								break;
+								// Everything else including shinny new HTML5 input types
+								default:
+									querystring += '&' + queryPair(subelm.name, subelm.value);
 							}
 						}
 					}
@@ -470,6 +475,7 @@ You should have received a copy of the GNU General Public License along with thi
 				}
 
 				nodeLoop(function(elm) {
+
 					if (replacement) {
 						switch (elm.nodeName) {
 							case 'SELECT':
@@ -563,7 +569,7 @@ You should have received a copy of the GNU General Public License along with thi
 										}
 
 									break;
-
+									// Everything else including shinny new HTML5 input types
 									default:
 										values.push(elm.value);
 								}
