@@ -134,6 +134,8 @@ $().loaded(foo);
 #### $(selector).loop(function)
 *Executes a function on the selector*
 
+***loop*** passes each selector DOM element to the specified function.
+
 ```html
 <!DOCTYPE html>
 <html>
