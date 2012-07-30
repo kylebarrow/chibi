@@ -356,7 +356,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 				if (classes) {
 					// Trim any whitespace
-					classarray = classes.split(' ');
+					classarray = classes.split(/\s+/);
 					action = action || 'replace';
 				}
 
@@ -402,6 +402,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 							break;
 						}
+						elm.className = elm.className.replace(/^\s+|\s+$/g, '');
 					}
 					else
 					{
