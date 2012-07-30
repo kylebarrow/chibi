@@ -1,4 +1,4 @@
-# Chibi v0.9
+# Chibi v0.9.1
 
 #### A tiny JavaScript micro-framework
 
