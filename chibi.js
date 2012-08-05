@@ -1,11 +1,11 @@
-/*Chibi v0.9.1, Copyright (C) 2012 Kyle Barrow
+/*Chibi v0.9.2, Copyright (C) 2012 Kyle Barrow
 
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses>.*/
-(function() {
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
+(function () {
 	'use strict';
 
 	var readyfn = [],
@@ -17,9 +17,10 @@ You should have received a copy of the GNU General Public License along with thi
 
 	// Fire any function calls on ready event
 	function fireReady() {
+		var i;
 		domready = true;
 
-		for (var i = 0; i < readyfn.length; i++) {
+		for (i = 0; i < readyfn.length; i += 1) {
 			readyfn[i]();
 		}
 		readyfn = [];
@@ -27,6 +28,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 	// Fire any function calls on loaded event
 	function fireLoaded() {
+		var i;
 		pageloaded = true;
 
 		// For browsers with no DOM loaded support
@@ -34,7 +36,7 @@ You should have received a copy of the GNU General Public License along with thi
 			fireReady();
 		}
 
-		for (var i = 0; i < loadedfn.length; i++) {
+		for (i = 0; i < loadedfn.length; i += 1) {
 			loadedfn[i]();
 		}
 		loadedfn = [];
@@ -45,14 +47,12 @@ You should have received a copy of the GNU General Public License along with thi
 		// Standards
 		d.addEventListener('DOMContentLoaded', fireReady, false);
 		w.addEventListener('load', fireLoaded, false);
-	}
-	else if (d.attachEvent) {
+	} else if (d.attachEvent) {
 		// IE
 		d.attachEvent('onreadystatechange', fireReady);
 		// IE < 9
 		w.attachEvent('onload', fireLoaded);
-	}
-	else {
+	} else {
 		// Anything else
 		w.onload = fireLoaded;
 	}
@@ -60,11 +60,11 @@ You should have received a copy of the GNU General Public License along with thi
 	// Utility functions
 
 	// Loop through node array
-	function nodeLoop(fn,nodes) {
-		// Good idea to walk up the DOM
-		var i = nodes.length;
+	function nodeLoop(fn, nodes) {
+		var i;
 
-		while (i--) {
+		// Good idea to walk up the DOM
+		for (i = nodes.length - 1; i >= 0; i -= 1) {
 			fn(nodes[i]);
 		}
 	}
@@ -72,7 +72,7 @@ You should have received a copy of the GNU General Public License along with thi
 
 	// Convert to camel case
 	function cssCamel(property) {
-		return property.replace(/-\w/g, function(result){return result.charAt(1).toUpperCase();});
+		return property.replace(/-\w/g, function (result) {return result.charAt(1).toUpperCase(); });
 	}
 
 	// Get computed style
@@ -90,29 +90,27 @@ You should have received a copy of the GNU General Public License along with thi
 	// Get nodes
 	function getNodes(selector) {
 
-		var nodelist = [], nodes = [], json = false;
+		var nodelist = [], nodes = [], json = false, i;
 
 		if (selector) {
 
 			// Element node, would prefer to use (selector instanceof HTMLElement) but no IE support
 			if (selector.nodeType && selector.nodeType === 1) {
 				nodelist = [selector]; // return element as node list
-			}
-			// JSON, document object or node list, would prefer to use (selector instanceof NodeList) but no IE support
-			else if (typeof selector === 'object' || (typeof selector.length === 'number' && typeof selector.item === 'function')) {
+			} else if (typeof selector === 'object' || (typeof selector.length === 'number' && typeof selector.item === 'function')) {
+				// JSON, document object or node list, would prefer to use (selector instanceof NodeList) but no IE support
 				json = true;
 				nodelist = selector;
-			}
-			else if (typeof selector === 'string') {
+			} else if (typeof selector === 'string') {
 
 				// A very light querySelectorAll polyfill for IE < 8. It suits my needs but is restricted to IE CSS support, is no speed demon, and does leave older mobile browsers in the cold (that support neither querySelectorAll nor currentStyle/getComputedStyle). If you want to use a fuller featured selector engine like Qwery, Sizzle et al, just return results to the nodes array: nodes = altselectorengine(selector)
 
 				// IE < 8
 				if (!d.querySelectorAll) {
 					// Polyfill querySelectorAll
-					d.querySelectorAll = function(selector) {
+					d.querySelectorAll = function (selector) {
 
-						var style, head = d.getElementsByTagName('head')[0], allnodes, selectednodes = [];
+						var style, head = d.getElementsByTagName('head')[0], allnodes, selectednodes = [], i;
 
 						style = d.createElement('STYLE');
 						style.type = 'text/css';
@@ -124,8 +122,10 @@ You should have received a copy of the GNU General Public License along with thi
 
 							allnodes = d.getElementsByTagName('*');
 
-							for (var i = 0; i < allnodes.length; i++) {
-								(computeStyle(allnodes[i], 'a') === 'b') ? selectednodes.push(allnodes[i]) : 0;
+							for (i = 0; i < allnodes.length; i += 1) {
+								if (computeStyle(allnodes[i], 'a') === 'b') {
+									selectednodes.push(allnodes[i]);
+								}
 							}
 
 							head.removeChild(style);
@@ -139,13 +139,12 @@ You should have received a copy of the GNU General Public License along with thi
 			}
 		}
 
-		if(json) {
+		if (json) {
 			nodes = nodelist;
-		}
-		else {
+		} else {
 			// Convert node list to array so results have full access to array methods
 			// Array.prototype.slice.call not supported in IE < 9 and often slower than loop anyway
-			for (var i = 0; i < nodelist.length; i++) {
+			for (i = 0; i < nodelist.length; i += 1) {
 				nodes[i] = nodelist[i];
 			}
 		}
@@ -157,8 +156,7 @@ You should have received a copy of the GNU General Public License along with thi
 	function setCss(elm, property, value) {
 		try {
 			elm.style[cssCamel(property)] = value;
-		}
-		catch (e) {}
+		} catch (e) {}
 	}
 
 	// Show CSS
@@ -166,7 +164,9 @@ You should have received a copy of the GNU General Public License along with thi
 		elm.style.display = '';
 
 		// For elements still hidden by style block
-		(computeStyle(elm, 'display') === 'none') ? elm.style.display = 'block' : 0;
+		if (computeStyle(elm, 'display') === 'none') {
+			elm.style.display = 'block';
+		}
 	}
 
 	// Handle standard method value returns
@@ -174,70 +174,76 @@ You should have received a copy of the GNU General Public License along with thi
 		values = values.reverse();
 
 		// Return string for singles
-		(values.length === 1) ? values = values[0] : 0;
+		if (values.length === 1) {
+			values = values[0];
+		}
 
 		return values;
 	}
 
 	// Serialize form & JSON values
 	function serializeData(nodes) {
-		var querystring = '',
-			subelm;
+		var querystring = '', subelm, i, j;
 
 		if (nodes.constructor === Object) { // Serialize JSON data
 			for (subelm in nodes) {
 				if (nodes.hasOwnProperty(subelm)) {
 					if (nodes[subelm].constructor === Array) {
-						for (var i = 0; i < nodes[subelm].length; i++) {
+						for (i = 0; i < nodes[subelm].length; i += 1) {
 							querystring += '&' + queryPair(subelm, nodes[subelm][i]);
 						}
-					}
-					else {
+					} else {
 						querystring += '&' + queryPair(subelm, nodes[subelm]);
 					}
 				}
 			}
 
-		}
-		else { // Serialize node data
+		} else { // Serialize node data
 
-			nodeLoop(function(elm) {
+			nodeLoop(function (elm) {
 				if (elm.nodeName === 'FORM') {
-					for (var i = 0; i < elm.elements.length; i++) {
+					for (i = 0; i < elm.elements.length; i += 1) {
 						subelm = elm.elements[i];
 
 						if (!subelm.disabled) {
 							switch (subelm.type) {
-								// Ignore buttons, unsupported XHR 1 form fields
-								case 'button':
-								case 'image':
-								case 'file':
-								case 'submit':
-								case 'reset':
+							// Ignore buttons, unsupported XHR 1 form fields
+							case 'button':
+							case 'image':
+							case 'file':
+							case 'submit':
+							case 'reset':
 								break;
 
-								case 'select-one':
-									(subelm.length > 0) ? querystring += '&' + queryPair(subelm.name, subelm.value) : 0;
-								break;
-
-								case 'select-multiple':
-									for (var j = 0; j < subelm.length; j++) {
-										(subelm[j].selected) ? querystring += '&' + queryPair(subelm.name, subelm[j].value) : 0;
-									}
-								break;
-
-								case 'checkbox':
-								case 'radio':
-									(subelm.checked) ? querystring += '&' + queryPair(subelm.name, subelm.value) : 0;
-								break;
-								// Everything else including shinny new HTML5 input types
-								default:
+							case 'select-one':
+								if (subelm.length > 0) {
 									querystring += '&' + queryPair(subelm.name, subelm.value);
+								}
+								break;
+
+							case 'select-multiple':
+								for (j = 0; j < subelm.length; j += 1) {
+									if (subelm[j].selected) {
+										querystring += '&' + queryPair(subelm.name, subelm[j].value);
+									}
+								}
+								break;
+
+							case 'checkbox':
+							case 'radio':
+								if (subelm.checked) {
+									querystring += '&' + queryPair(subelm.name, subelm.value);
+								}
+								break;
+
+							// Everything else including shinny new HTML5 input types
+							default:
+								querystring += '&' + queryPair(subelm.name, subelm.value);
 							}
 						}
 					}
 				}
-			},nodes);
+			}, nodes);
 		}
 		// Tidy up first &
 		return (querystring.length > 0) ? querystring.substring(1) : '';
@@ -250,100 +256,118 @@ You should have received a copy of the GNU General Public License along with thi
 		// Public functions
 		return {
 			// Fire on DOM ready
-			ready: function(fn) {
+			ready: function (fn) {
 				if (fn) {
-					(domready) ? fn() : readyfn.push(fn);
+					if (domready) {
+						fn();
+					} else {
+						readyfn.push(fn);
+					}
 				}
 			},
 			// Fire on page loaded
-			loaded: function(fn) {
+			loaded: function (fn) {
 				if (fn) {
-					(pageloaded) ? fn() : loadedfn.push(fn);
+					if (pageloaded) {
+						fn();
+					} else {
+						loadedfn.push(fn);
+					}
 				}
 			},
 			// Executes a function on nodes
-			loop: function(fn) {
+			loop: function (fn) {
 				if (typeof fn === "function") {
-					nodeLoop(function(elm) {
+					nodeLoop(function (elm) {
 						fn(elm);
-					},nodes);
+					}, nodes);
 				}
 			},
 			// Find nodes
-			find: function(filter) {
+			find: function (filter) {
 				if (filter) {
-					var temp = [];
+					var temp = [], i;
 
 					switch (filter) {
-						case 'first':
-							(nodes.length > 0) ? nodes = [nodes.shift()] : 0;
+					case 'first':
+						if (nodes.length > 0) {
+							nodes = [nodes.shift()];
+						}
 						break;
 
-						case 'last':
-							(nodes.length > 0) ? nodes = [nodes.pop()] : 0;
+					case 'last':
+						if (nodes.length > 0) {
+							nodes = [nodes.pop()];
+						}
 						break;
 
-						case 'odd':
-						case 'even':
-							for (var i = (filter === "odd") ? 0 : 1; i < nodes.length; i += 2) {
-								temp.push(nodes[i]);
-							}
-							nodes = temp;
+					case 'odd':
+					case 'even':
+						for (i = (filter === "odd") ? 0 : 1; i < nodes.length; i += 2) {
+							temp.push(nodes[i]);
+						}
+						nodes = temp;
 						break;
 					}
 				}
 
-				return (nodes.length > 0)? (nodes.length === 1)? nodes[0]: nodes: false;
+				return (nodes.length > 0) ? (nodes.length === 1) ? nodes[0] : nodes : false;
 			},
 			// Hide node
-			hide: function() {
-				nodeLoop(function(elm) {
+			hide: function () {
+				nodeLoop(function (elm) {
 					elm.style.display = 'none';
-				},nodes);
+				}, nodes);
 			},
 			// Show node
-			show: function() {
-				nodeLoop(function(elm) {
+			show: function () {
+				nodeLoop(function (elm) {
 					showCss(elm);
-				},nodes);
+				}, nodes);
 			},
 			// Toggle node display
-			toggle: function() {
-				nodeLoop(function(elm) {
+			toggle: function () {
+				nodeLoop(function (elm) {
 
 					// computeStyle instead of style.display == 'none' catches elements that are hidden via style block
 					if (computeStyle(elm, 'display') === 'none') {
 						showCss(elm);
-					}
-					else {
+					} else {
 						elm.style.display = 'none';
 					}
 
-				},nodes);
+				}, nodes);
 			},
 			// Remove node
-			remove: function() {
+			remove: function () {
 				var removed = nodes.length;
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 					// Catch error in unlikely case elm has been removed
 					try {
 						elm.parentNode.removeChild(elm);
-					}
-					catch (e) {}
-				},nodes);
+					} catch (e) {}
+				}, nodes);
 
 				// Clear nodes after remove
 				nodes = [];
 			},
 			// Get/Set CSS
-			css: function(property, value) {
+			css: function (property, value) {
 
 				var values = [];
 
-				nodeLoop(function(elm) {
-					(value) ? setCss(elm, property, value) : (elm.style[cssCamel(property)]) ? values.push(elm.style[cssCamel(property)]) : (computeStyle(elm,property))? values.push(computeStyle(elm,property)) : values.push(null);
-				},nodes);
+				nodeLoop(function (elm) {
+					if (value) {
+						setCss(elm, property, value);
+					} else if (elm.style[cssCamel(property)]) {
+						values.push(elm.style[cssCamel(property)]);
+					} else if (computeStyle(elm, property)) {
+						values.push(computeStyle(elm, property));
+					} else {
+						values.push(null);
+					}
+				}, nodes);
 
 				// Get CSS property: return values
 				if (values.length > 0) {
@@ -351,8 +375,8 @@ You should have received a copy of the GNU General Public License along with thi
 				}
 			},
 			// Get/Set/Add/Remove class
-			cls: function(classes, action) {
-				var values = [], classarray, classname, search, has;
+			cls: function (classes, action) {
+				var values = [], classarray, classname, search, has, i;
 
 				if (classes) {
 					// Trim any whitespace
@@ -360,55 +384,53 @@ You should have received a copy of the GNU General Public License along with thi
 					action = action || 'replace';
 				}
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 
 					classname = elm.className;
 
 					if (classes) {
 						switch (action) {
-							case 'add':
-								elm.className = classname + " " + classes;
+						case 'add':
+							elm.className = classname + " " + classes;
 							break;
 
-							case 'replace':
-								elm.className = classes;
+						case 'replace':
+							elm.className = classes;
 							break;
 
-							case 'has':
-							case 'toggle':
-							case 'remove':
-								has = true;
+						case 'has':
+						case 'toggle':
+						case 'remove':
+							has = true;
 
-								for (var i = 0; i < classarray.length; i++) {
+							for (i = 0; i < classarray.length; i += 1) {
 
-									search = new RegExp('\\b'+classarray[i]+'\\b', 'g');
+								search = new RegExp('\\b' + classarray[i] + '\\b', 'g');
 
-									if (action === "has") {
-										if (!classname.match(search)) {
-											has = false;
-											break;
-										}
+								if (action === "has") {
+									if (!classname.match(search)) {
+										has = false;
+										break;
 									}
-									else if (action === "toggle") {
-										elm.className = (elm.className.match(search))? elm.className.replace(search, '') : elm.className + " " + classarray[i];
-									}
-									else { // replace
-										elm.className = elm.className.replace(search, '');
-									}
-
+								} else if (action === "toggle") {
+									elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + " " + classarray[i];
+								} else { // replace
+									elm.className = elm.className.replace(search, '');
 								}
 
-								(action === "has")? values.push(has) : 0;
+							}
+
+							if (action === "has") {
+								values.push(has);
+							}
 
 							break;
 						}
 						elm.className = elm.className.replace(/^\s+|\s+$/g, '');
-					}
-					else
-					{
+					} else {
 						values.push(classname);
 					}
-				},nodes);
+				}, nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -416,11 +438,10 @@ You should have received a copy of the GNU General Public License along with thi
 
 			},
 			// Get/Set innerHTML optionally before/after
-			html: function(value, location) {
-				var values = [],
-					tmpnodes, tmpnode;
+			html: function (value, location) {
+				var values = [], tmpnodes, tmpnode;
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 
 					if (location) {
 						// No insertAdjacentHTML support for FF < 8 and IE doesn't allow insertAdjacentHTML table manipulation, so use this instead
@@ -428,51 +449,70 @@ You should have received a copy of the GNU General Public License along with thi
 						tmpnodes = d.createElement('div');
 						tmpnodes.innerHTML = value;
 
-						while ((tmpnode = tmpnodes.lastChild)) {
+						while ((tmpnode = tmpnodes.lastChild) !== null) {
 							// Catch error in unlikely case elm has been removed
 							try {
 								if (location === 'before') {
 									elm.parentNode.insertBefore(tmpnode, elm);
-								}
-								else if (location === 'after') {
+								} else if (location === 'after') {
 									elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
 								}
-							}
-							catch (e) {break;}
+							} catch (e) {break; }
+						}
+					} else {
+						if (value) {
+							elm.innerHTML = value;
+						} else {
+							values.push(elm.innerHTML);
 						}
 					}
-					else {
-						(value) ? elm.innerHTML = value : values.push(elm.innerHTML);
-					}
-				},nodes);
+				}, nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
 				}
 			},
 			// Get/Set HTML attributes
-			attr: function(name, value) {
+			attr: function (name, value) {
 				var values = [];
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 					if (name) {
 						name = name.toLowerCase();
 
 						switch (name) {
-							// IE < 9 doesn't allow style or class via get/setAttribute so switch. cssText returns prettier CSS anyway
-							case 'style':
-								(value) ? elm.style.cssText = value : elm.style.cssText ? values.push(elm.style.cssText) : values.push(null);
+						// IE < 9 doesn't allow style or class via get/setAttribute so switch. cssText returns prettier CSS anyway
+						case 'style':
+							if (value) {
+								elm.style.cssText = value;
+							} else if (elm.style.cssText) {
+								values.push(elm.style.cssText);
+							} else {
+								values.push(null);
+							}
 							break;
 
-							case 'class':
-								(value) ? elm.className = value : elm.className ? values.push(elm.className) : values.push(null);
+						case 'class':
+							if (value) {
+								elm.className = value;
+							} else if (elm.className) {
+								values.push(elm.className);
+							} else {
+								values.push(null);
+							}
 							break;
 
-							default:
-								(value) ? elm.setAttribute(name, value) : elm.getAttribute(name) ? values.push(elm.getAttribute(name)) : values.push(null);
+						default:
+							if (value) {
+								elm.setAttribute(name, value);
+							} else if (elm.getAttribute(name)) {
+								values.push(elm.getAttribute(name));
+							} else {
+								values.push(null);
+							}
 						}
 					}
-				},nodes);
+				}, nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
@@ -480,180 +520,202 @@ You should have received a copy of the GNU General Public License along with thi
 
 			},
 			// Get/Set form element values
-			val: function(replacement) {
-				var radiogroup = [],
-					values = [];
+			val: function (replacement) {
+				var radiogroup = [], values = [], i, j, grouped, active;
 
-				if (typeof replacement !== 'undefined' && typeof replacement !== 'object') {
+				if (typeof replacement === 'string') {
 					replacement = [replacement];
 				}
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 
 					if (replacement) {
 						switch (elm.nodeName) {
-							case 'SELECT':
-								for (var i = 0; i < elm.length; i++) {
-									// Multiple select
-									for (var j = 0; j < replacement.length; j++) {
-										elm[i].selected = '';
+						case 'SELECT':
+							for (i = 0; i < elm.length; i += 1) {
+								// Multiple select
+								for (j = 0; j < replacement.length; j += 1) {
+									elm[i].selected = '';
 
-										if (elm[i].value === replacement[j]) {
-											elm[i].selected = 'selected';
-											break;
-										}
+									if (elm[i].value === replacement[j]) {
+										elm[i].selected = 'selected';
+										break;
 									}
 								}
+							}
 							break;
 
-							case 'INPUT':
-								switch (elm.type) {
-									case 'checkbox':
-									case 'radio':
-										elm.checked = '';
+						case 'INPUT':
+							switch (elm.type) {
+							case 'checkbox':
+							case 'radio':
+								elm.checked = '';
 
-										for (var i = 0; i < replacement.length; i++) {
-											if (elm.value === replacement[i]) {
-												elm.checked = 'checked';
-												break;
-											}
-										}
-
-									break;
-									default:
-										elm.value = replacement[0];
+								for (i = 0; i < replacement.length; i += 1) {
+									if (elm.value === replacement[i]) {
+										elm.checked = 'checked';
+										break;
+									}
 								}
 
-							break;
-
-							case 'TEXTAREA':
-							case 'BUTTON':
+								break;
+							default:
 								elm.value = replacement[0];
+							}
+
+							break;
+
+						case 'TEXTAREA':
+						case 'BUTTON':
+							elm.value = replacement[0];
 							break;
 						}
 
-					}
-					else
-					{
+					} else {
 						switch (elm.nodeName) {
-							case 'SELECT':
+						case 'SELECT':
 
-								var active = values.length;
+							active = values.length;
 
-								values.push([]);
+							values.push([]);
 
-								for (var i = 0; i < elm.length; i++) {
-									(elm[i].selected) ? values[active].push(elm[i].value) : 0;
+							for (i = 0; i < elm.length; i += 1) {
+								if (elm[i].selected) {
+									values[active].push(elm[i].value);
 								}
+							}
 
-								switch (values[active].length) {
-									case 0:
-										values[active] = null;
-									break;
+							switch (values[active].length) {
+							case 0:
+								values[active] = null;
+								break;
 
-									case 1:
-										values[active] = values[active][0];
-									break;
-								}
+							case 1:
+								values[active] = values[active][0];
+								break;
+							}
 
 							break;
 
-							case 'INPUT':
-								switch (elm.type) {
-									case 'checkbox':
-										(elm.checked) ? values.push(elm.value) : values.push(null);
-									break;
+						case 'INPUT':
+							switch (elm.type) {
+							case 'checkbox':
+								if (elm.checked) {
+									values.push(elm.value);
+								} else {
+									values.push(null);
+								}
+								break;
 
-									case 'radio':
+							case 'radio':
 
-										var grouped = false;
+								grouped = false;
 
-										for (var i = 0; i < radiogroup.length; i++) {
-											if (radiogroup[i][0] === elm.name) {
-												(elm.checked) ? values[radiogroup[i][1]] = elm.value : 0;
-
-												grouped = true;
-											}
+								for (i = 0; i < radiogroup.length; i += 1) {
+									if (radiogroup[i][0] === elm.name) {
+										if (elm.checked) {
+											values[radiogroup[i][1]] = elm.value;
 										}
+										grouped = true;
+									}
+								}
 
-										if (!grouped) {
-											radiogroup.push([elm.name, values.length]);
+								if (!grouped) {
+									radiogroup.push([elm.name, values.length]);
 
-											(elm.checked) ? values.push(elm.value) : values.push(null);
-										}
-
-									break;
-									// Everything else including shinny new HTML5 input types
-									default:
+									if (elm.checked) {
 										values.push(elm.value);
+									} else {
+										values.push(null);
+									}
 								}
+
+								break;
+							// Everything else including shinny new HTML5 input types
+							default:
+								values.push(elm.value);
+							}
 
 							break;
 
-							case 'TEXTAREA':
-							case 'BUTTON':
-								values.push(elm.value);
+						case 'TEXTAREA':
+						case 'BUTTON':
+							values.push(elm.value);
 							break;
 						}
 
 					}
 
-				},nodes);
+				}, nodes);
 
 				if (values.length > 0) {
 					return returnValues(values);
 				}
 			},
 			// Event handler
-			on: function(event,fn,clear) {
+			on: function (event, fn, clear) {
 
-				(selector === w || selector === d)? nodes = [selector]: 0;
+				if (selector === w || selector === d) {
+					nodes = [selector];
+				}
 
-				nodeLoop(function(elm) {
+				nodeLoop(function (elm) {
 					if (d.addEventListener) {
-						(clear)? elm.removeEventListener(event, fn, false) : elm.addEventListener(event, fn, false);
+						if (clear) {
+							elm.removeEventListener(event, fn, false);
+						} else {
+							elm.addEventListener(event, fn, false);
+						}
+					} else if (d.attachEvent) {
+						if (clear) {
+							elm.detachEvent('on' + event, fn);
+						} else {
+							elm.attachEvent('on' + event, fn);
+						}
 					}
-					else if (d.attachEvent) {
-						(clear)? elm.detachEvent('on'+event, fn) : elm.attachEvent('on'+event, fn);
-					}
-				},nodes);
+				}, nodes);
 			},
 			// Basic XHR 1, no file support. Shakes fist at IE
-			ajax: function(url, method, callback, nocache) {
+			ajax: function (url, method, callback, nocache) {
 				var xhr,
-					method = method || 'GET',
 					query = serializeData(nodes),
 					querystart = (url.indexOf('?') === -1) ? '?' : '&',
 					timestamp = '_ts=' + (+new Date());
 
+				method = method || 'GET';
+
 				if (w.XMLHttpRequest) {
 					xhr = new XMLHttpRequest();
-				}
-				else if (w.ActiveXObject) {
+				} else if (w.ActiveXObject) {
 					xhr = new ActiveXObject('Microsoft.XMLHTTP'); // IE < 9
 				}
 
 				if (xhr) {
 					method = method.toUpperCase();
 
-					(method === 'GET') ? url += querystart + query : 0;
-					(nocache) ? (method === 'POST') ? url += querystart + timestamp : url += '&' + timestamp : 0;
+					if (method === 'GET') {
+						url += querystart + query;
+					}
+
+					if (nocache) {
+						url += (method === 'POST') ? querystart + timestamp : '&' + timestamp;
+					}
 
 					// Douglas Crockford: "Synchronous programming is disrespectful and should not be employed in applications which are used by people"
 					xhr.open(method, url, true);
 
-					(method === 'POST') ? xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded') : 0;
+					if (method === 'POST') {
+						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					}
 
 					xhr.send(query);
 
-					xhr.onreadystatechange = function() {
+					xhr.onreadystatechange = function () {
 						if (xhr.readyState === 4 && xhr.status === 200) {
-							if(callback)
-							{
+							if (callback) {
 								try {
 									callback(xhr.responseText);
-								}
-								catch (e) {}
+								} catch (e) {}
 							}
 						}
 					};
