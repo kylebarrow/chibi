@@ -1,4 +1,4 @@
-# Chibi v0.9.2
+# Chibi v1.0
 
 #### A tiny JavaScript micro-framework
 
@@ -397,12 +397,14 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
-#### $(selector).ajax(url,*method*,*callback*,*nocache*)
-*Sends an AJAX request, optionally firing a callback with the XHR `responseText` on success*
+#### $(selector).ajax(url,*method*,*callback*,*nocache*,*nojsonp*)
+*Sends an AJAX request, optionally firing a callback with the XHR `responseText` and `status`*
 
-**ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser.
+**ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
 
 **ajax** supports JSON as a selector ({'name','value'}), useful for when you want to send data without using form field DOM elements.
+
+For cross-domain requests, **ajax** uses JSONP by default but this can be overridden if *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP request.
 
 ```html
 <!DOCTYPE html>
@@ -416,8 +418,10 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </form>
 <script>
 	$('form').ajax('ajax.html'); // XHR all form data using "GET" to "ajax.html"
-	$({'text':'Foo Bar'}).ajax('ajax.html'); // XHR the JSON using "GET" to "ajax.html"
-	$('form').ajax('ajax.html',"POST",function(data){alert(data)},true); // XHR all form data using "POST" to "ajax.html", alerts results on success, adds a cache busting time stamp
+	$({text:'Foo Bar'}).ajax('ajax.html'); // XHR the JSON using "GET" to "ajax.html"
+	$('form').ajax('ajax.html',"POST",function(data,status){ },true); // XHR all form data using "POST" to "ajax.html", returns responseText and status, adds a cache busting time stamp
+	$({sort:'created',direction:'asc'}).ajax('https://api.github.com/users/kylebarrow/repos?callback=?','GET',function(data,status){ }); // JSONP
+
 </script>
 </body>
 </html>

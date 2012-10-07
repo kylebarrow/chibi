@@ -1,4 +1,4 @@
-/*Chibi v0.9.2, Copyright (C) 2012 Kyle Barrow
+/*Chibi v1.0, Copyright (C) 2012 Kyle Barrow
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -676,55 +676,97 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				}, nodes);
 			},
 			// Basic XHR 1, no file support. Shakes fist at IE
-			ajax: function (url, method, callback, nocache) {
+			ajax: function (url, method, callback, nocache, nojsonp) {
 				var xhr,
 					query = serializeData(nodes),
 					querystart = (url.indexOf('?') === -1) ? '?' : '&',
-					timestamp = '_ts=' + (+new Date());
+					hostsearch = new RegExp('http[s]?://(.*?)/', 'gi'),
+					domain = hostsearch.exec(url),
+					timestamp = '_ts=' + (+new Date()),
+					head = d.getElementsByTagName('head')[0],
+					jsonpcallback  = 'Chibi' + (+new Date()),
+					script;
 
-				method = method || 'GET';
 
-				if (w.XMLHttpRequest) {
-					xhr = new XMLHttpRequest();
-				} else if (w.ActiveXObject) {
-					xhr = new ActiveXObject('Microsoft.XMLHTTP'); // IE < 9
-				}
+				// JSONP if cross domain url
+				if (!nojsonp && domain && w.location.host !== domain[1]) {
 
-				if (xhr) {
-					method = method.toUpperCase();
-
-					if (method === 'GET') {
-						url += querystart + query;
-					}
+					url += querystart + query;
 
 					if (nocache) {
-						url += (method === 'POST') ? querystart + timestamp : '&' + timestamp;
+						url += '&' + timestamp;
 					}
 
-					// Douglas Crockford: "Synchronous programming is disrespectful and should not be employed in applications which are used by people"
-					xhr.open(method, url, true);
+					// Replace jsonp ? with callback
+					if (callback && url.indexOf('=?') !== -1) {
 
-					if (method === 'POST') {
-						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						url = url.replace('=?', '=' + jsonpcallback);
+
+						w[jsonpcallback] = function (data) {
+							try {
+								callback(data, 200);
+							} catch (e) {}
+						};
 					}
 
-					xhr.send(query);
+					script = document.createElement('script');
+					script.async = 'async';
+					script.src = url;
 
-					xhr.onreadystatechange = function () {
-						if (xhr.readyState === 4 && xhr.status === 200) {
-							if (callback) {
-								try {
-									callback(xhr.responseText);
-								} catch (e) {}
-							}
-						}
+					script.onload = function () {
+						head.removeChild(script);
 					};
+
+					head.appendChild(script);
+
+				} else {
+
+					method = method || 'GET';
+
+					if (w.XMLHttpRequest) {
+						xhr = new XMLHttpRequest();
+					} else if (w.ActiveXObject) {
+						xhr = new ActiveXObject('Microsoft.XMLHTTP'); // IE < 9
+					}
+
+					if (xhr) {
+						method = method.toUpperCase();
+
+						if (method === 'GET') {
+							url += querystart + query;
+							query = null;
+						}
+
+						if (nocache) {
+							url += (method === 'POST') ? querystart + timestamp : '&' + timestamp;
+						}
+
+						// Douglas Crockford: "Synchronous programming is disrespectful and should not be employed in applications which are used by people"
+						xhr.open(method, url, true);
+
+						xhr.onreadystatechange = function () {
+							if (xhr.readyState === 4) {
+								if (callback) {
+									try {
+										callback(xhr.responseText, xhr.status);
+									} catch (e) {}
+								}
+							}
+						};
+
+						if (method === 'POST') {
+							xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+						}
+
+						xhr.send(query);
+
+					}
 				}
 			}
 		};
 	}
 
-	// Set Chibi's global namespace here
+	// Set Chibi's global namespace here ($)
 	w.$ = chibi;
 
 }());
