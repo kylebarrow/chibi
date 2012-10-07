@@ -420,10 +420,22 @@ For cross-domain requests, **ajax** uses JSONP by default but this can be overri
 	$('form').ajax('ajax.html'); // XHR all form data using "GET" to "ajax.html"
 	$({text:'Foo Bar'}).ajax('ajax.html'); // XHR the JSON using "GET" to "ajax.html"
 	$('form').ajax('ajax.html',"POST",function(data,status){ },true); // XHR all form data using "POST" to "ajax.html", returns responseText and status, adds a cache busting time stamp
-	$({sort:'created',direction:'asc'}).ajax('https://api.github.com/users/kylebarrow/repos?callback=?','GET',function(data,status){ }); // JSONP
-
 </script>
 </body>
 </html>
 ```
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<script>
+	$({sort:'created',direction:'asc'}).ajax('https://api.github.com/users/kylebarrow/repos?callback=?','GET',function(data,status){ }); // JSONP
+</script>
+</body>
+</html>
+```
+
 ##### FIN
