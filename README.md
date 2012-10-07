@@ -1,4 +1,4 @@
-# Chibi v1.0
+# Chibi v1.0.1
 
 #### A tiny JavaScript micro-framework
 
@@ -432,7 +432,8 @@ For cross-domain requests, **ajax** uses JSONP by default but this can be overri
 </head>
 <body>
 <script>
-	$({sort:'created',direction:'asc'}).ajax('https://api.github.com/users/kylebarrow/repos?callback=?','GET',function(data,status){ }); // JSONP
+	$().ajax('https://api.github.com/users/kylebarrow/repos?sort=created&direction=asc&callback=?','GET',function(data,status){ }); // JSONP
+	$({sort: "created", direction: "asc", callback: "?"}).ajax('https://api.github.com/users/kylebarrow/repos','GET',function(data,status){ }); // JSONP with JSON query
 </script>
 </body>
 </html>

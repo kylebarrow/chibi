@@ -1,4 +1,4 @@
-/*Chibi v1.0, Copyright (C) 2012 Kyle Barrow
+/*Chibi v1.0.1, Copyright (C) 2012 Kyle Barrow
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -697,6 +697,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						url += '&' + timestamp;
 					}
 
+					// Replace possible encoded ?
+					url = url.replace('=%3F', '=?');
+
 					// Replace jsonp ? with callback
 					if (callback && url.indexOf('=?') !== -1) {
 
@@ -709,10 +712,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						};
 					}
 
+					// JSONP
 					script = document.createElement('script');
 					script.async = 'async';
 					script.src = url;
 
+					// Tidy up
 					script.onload = function () {
 						head.removeChild(script);
 					};
