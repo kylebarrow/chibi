@@ -402,9 +402,9 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 
 **ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
 
-**ajax** supports JSON as a selector ({'name','value'}), useful for when you want to send data without using form field DOM elements.
+**ajax** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
 
-For cross-domain requests, **ajax** uses JSONP by default but this can be overridden if *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP request.
+For cross-domain requests, **ajax** uses JSONP by default but this can be overridden if *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP requests.
 
 ```html
 <!DOCTYPE html>
