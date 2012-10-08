@@ -417,9 +417,16 @@ For cross-domain requests, **ajax** uses JSONP by default but this is overridden
 <input type="text" value="Foobar" name="text">
 </form>
 <script>
-	$('form').ajax('ajax.html'); // XHR all form data using "GET" to "ajax.html"
-	$({text:'Foo Bar'}).ajax('ajax.html'); // XHR the JSON using "GET" to "ajax.html"
-	$('form').ajax('ajax.html',"POST",function(data,status){ },true); // XHR all form data using "POST" to "ajax.html", returns responseText and status, adds a cache busting time stamp
+	// XHR all form data using "GET" to "ajax.html"
+	$('form').ajax('ajax.html');
+
+	// XHR the JSON using "GET" to "ajax.html"
+	$({text:'Foo Bar'}).ajax('ajax.html');
+
+	// XHR all form data using "POST" to "ajax.html", returns responseText and status, adds a cache busting time stamp
+	$('form').ajax('ajax.html',"POST",function(data,status){
+		// Do awesome
+	},true);
 </script>
 </body>
 </html>
