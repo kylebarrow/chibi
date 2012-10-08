@@ -10,13 +10,13 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Ch
 
 * Chibi is really tiny: 5KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
-* Supports creaky old browsers like IE6.
+* Even supports creaky old browsers like IE6.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
 
 ### The lumpy, chewy bits
 
-* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast of some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
+* Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast as some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
 ### Browser Support
