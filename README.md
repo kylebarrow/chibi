@@ -1,4 +1,4 @@
-# Chibi v1.0.1
+# Chibi v1.0.2
 
 #### A tiny JavaScript micro-framework
 
@@ -404,7 +404,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 
 **ajax** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
 
-For cross-domain requests, **ajax** uses JSONP by default but this can be overridden if *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP requests.
+For cross-domain requests, **ajax** uses JSONP by default but this is overridden when *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP requests.
 
 ```html
 <!DOCTYPE html>
@@ -432,8 +432,15 @@ For cross-domain requests, **ajax** uses JSONP by default but this can be overri
 </head>
 <body>
 <script>
-	$().ajax('https://api.github.com/users/kylebarrow/repos?sort=created&direction=asc&callback=?','GET',function(data,status){ }); // JSONP
-	$({sort: "created", direction: "asc", callback: "?"}).ajax('https://api.github.com/users/kylebarrow/repos','GET',function(data,status){ }); // JSONP with JSON query
+	// JSONP
+	$().ajax('https://api.github.com/users/kylebarrow/repos?sort=created&direction=asc&callback=?','GET',function(data,status){
+		// Do awesome
+	});
+
+	// JSONP with JSON query
+	$({sort: "created", direction: "asc", callback: "?"}).ajax('https://api.github.com/users/kylebarrow/repos','GET',function(data,status){
+		// Do awesome
+	});
 </script>
 </body>
 </html>

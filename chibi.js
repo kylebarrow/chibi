@@ -1,4 +1,4 @@
-/*Chibi v1.0.1, Copyright (C) 2012 Kyle Barrow
+/*Chibi v1.0.2, Copyright (C) 2012 Kyle Barrow
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		loadedfn = [],
 		domready = false,
 		pageloaded = false,
+		jsonpcount = 0,
 		d = document,
 		w = window;
 
@@ -684,9 +685,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 					domain = hostsearch.exec(url),
 					timestamp = '_ts=' + (+new Date()),
 					head = d.getElementsByTagName('head')[0],
-					jsonpcallback  = 'Chibi' + (+new Date()),
+					jsonpcallback = 'chibi' + (+new Date()) + (jsonpcount += 1),
 					script;
-
 
 				// JSONP if cross domain url
 				if (!nojsonp && domain && w.location.host !== domain[1]) {
@@ -709,6 +709,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 							try {
 								callback(data, 200);
 							} catch (e) {}
+
+							// Tidy up
+							w[jsonpcallback] = undefined;
 						};
 					}
 
