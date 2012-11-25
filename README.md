@@ -1,4 +1,4 @@
-# Chibi v1.0.3
+# Chibi v1.0.4
 
 #### A tiny JavaScript micro-framework
 
@@ -49,6 +49,7 @@ Chibi's supports standard CSS selectors but you can also pass in DOM elements di
 ##### CSS selector
 
 ```js
+$("p") // Returns an array of all paragraph elements
 $("p").hide() // Hides all paragraphs
 $("#foo").show() // Shows element with id equal to "foo"
 $(".foo").hide() // Hides elements with "foo" CSS class
@@ -101,7 +102,7 @@ function foo() {
 $().loaded(foo);
 ```
 
-#### $(selector).find(*filter*)
+#### $(selector).find(filter)
 *Finds the selector and optionally filter by first, last, odd or even.*
 
 **find** will return either a single DOM element (only one matching DOM element found), array of DOM elements (more than one matching DOM element found), or false (no matching DOM element found).
@@ -235,7 +236,7 @@ p {display:none}
 </html>
 ```
 
-#### $(selector).css(property,*value*)
+#### $(selector).css(property, value)
 *Gets or optionally sets the CSS property for the selector.*
 
 **css** with no *value* will return either a CSS property string (only one matching DOM element found) or array of CSS property strings (more than one matching DOM element found). **css** will return the computed property value if the property isn't explicitly set which can vary between browsers. For example, an element with no explicit font weight will return 'normal' in Opera and Webkit browsers but '400' in Firefox and Internet Explorer browsers.
@@ -262,7 +263,7 @@ p {display:none}
 </html>
 ```
 
-#### $(selector).cls(*class*,*replace/add/remove/toggle/has*)
+#### $(selector).cls(class, replace/add/remove/toggle/has)
 *Gets or optionally sets the class for a selector.*
 
 **cls** with no arguments will return either a class string (only one matching DOM element found) or array of class strings (more than one matching DOM element found).
@@ -296,7 +297,7 @@ If only the *class* argument is specified, the default action is to replace any 
 </html>
 ```
 
-#### $(selector).html(*html*,*before/after*)
+#### $(selector).html(html, before/after)
 *Gets or optionally sets the inner HTML for a selector. Optionally inserts HTML before or after the element.*
 
 **html** with no arguments will return either an HTML string (only one matching DOM element found) or array of HTML strings (more than one matching DOM element found).
@@ -322,7 +323,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
-#### $(selector).attr(property,*value*)
+#### $(selector).attr(property, value)
 *Gets or optionally sets the property for a selector.*
 
 **attr** with no arguments will return either a property string (only one matching DOM element found) or array of property strings (more than one matching DOM element found).
@@ -345,7 +346,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
-#### $(selector).val(*value*)
+#### $(selector).val(value)
 *Gets or optionally sets the value of a form element selector.*
 
 **val** with no arguments will return either a value string (only one matching form field DOM element found) or array of value strings (more than one matching form field DOM element found).
@@ -371,7 +372,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
-#### $(selector).on(event,listener,*clear*)
+#### $(selector).on(event, listener, clear)
 *Adds an event listener to the selector, optionally clears the event listener.*
 
 **on** adds an event listener to the selector. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
@@ -397,7 +398,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
-#### $(selector).ajax(url,*method*,*callback*,*nocache*,*nojsonp*)
+#### $(selector).ajax(url, method, callback, nocache, nojsonp)
 *Sends an AJAX request, optionally firing a callback with the XHR `responseText` and `status`*
 
 **ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
