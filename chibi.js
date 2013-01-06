@@ -1,4 +1,4 @@
-/*Chibi v1.0.4, Copyright (C) 2012 Kyle Barrow
+/*Chibi v1.0.5, Copyright (C) 2012 Kyle Barrow
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -244,7 +244,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		// Only attach nodes if not JSON
-		cb = (json) ? {} : nodes;
+		cb = json ? {} : nodes;
 
 		// Public functions
 
@@ -272,7 +272,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		cb.loop = function (fn) {
 			if (typeof fn === "function") {
 				nodeLoop(function (elm) {
-					fn(elm);
+					// <= IE 8 loses scope so need to apply
+					return fn.apply(elm, arguments);
 				}, nodes);
 			}
 		};
@@ -660,10 +661,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						elm.addEventListener(event, fn, false);
 					}
 				} else if (d.attachEvent) {
+
 					if (clear) {
-						elm.detachEvent('on' + event, fn);
+						elm.detachEvent('on' + event, elm[event + fn]);
+						// Tidy up
+						elm[event + fn] = null;
 					} else {
-						elm.attachEvent('on' + event, fn);
+						// <= IE 8 loses scope so need to apply, we add this to object so we can detach later (can't detach anonymous functions)
+						elm[event + fn] =  function () { return fn.apply(elm, arguments); };
+
+						elm.attachEvent('on' + event, elm[event + fn]);
 					}
 				}
 			}, nodes);
