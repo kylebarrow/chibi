@@ -765,6 +765,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 					}
 
+					if (nojsonp === true) {
+					    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+					}
+					
 					xhr.send(query);
 
 				}
