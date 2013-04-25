@@ -1,4 +1,4 @@
-# Chibi v1.0.7
+# Chibi v1.0.8
 
 #### A tiny JavaScript micro-framework
 
@@ -39,7 +39,6 @@ Chibi has been tested with and supports the following browsers:
 * Symbian^3 Browser or higher
 
 Chibi should also work with any other browser that supports `document.querySelectorAll()`.
-
 ### Using Chibi
 
 Chibi syntax is similar to that pioneered by jQuery: `$(selector).method()`. It intentionally uses the same `$` namespace as jQuery because micro-frameworks and grown-up frameworks should never mix.
