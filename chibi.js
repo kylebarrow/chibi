@@ -450,7 +450,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 								elm.parentNode.insertBefore(tmpnode, elm);
 							} else if (location === 'after') {
 								elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
-							}
+							} else if (location === 'append') {
+								elm.appendChild(tmpnode);
+							} else if (location === 'prepend') {
+								elm.insertBefore(tmpnode, elm.firstChild);
+							)
 						} catch (e) {break; }
 					}
 				} else {
