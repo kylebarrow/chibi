@@ -1,0 +1,24 @@
+{
+  "name": "chibi",
+  "main": "chibi.js",
+  "version": "1.0.8",
+  "homepage": "https://github.com/bitbonsai/chibi",
+  "authors": [
+    "Kyle Barrow"
+  ],
+  "description": "A tiny JavaScript micro-framework from @kylebarrow",
+  "keywords": [
+    "javascript",
+    "microframework",
+    "tiny",
+    "jquery"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
