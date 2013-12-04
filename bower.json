@@ -1,8 +1,8 @@
 {
   "name": "chibi",
   "main": "chibi.js",
-  "version": "1.0.8",
-  "homepage": "https://github.com/bitbonsai/chibi",
+  "version": "1.0.9",
+  "homepage": "https://github.com/kylebarrow/chibi",
   "authors": [
     "Kyle Barrow"
   ],
