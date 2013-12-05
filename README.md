@@ -1,4 +1,4 @@
-# Chibi v1.0.9
+# Chibi v1.0.10
 
 #### A tiny JavaScript micro-framework
 
@@ -296,12 +296,12 @@ If only the *class* argument is specified, the default action is to replace any 
 </html>
 ```
 
-#### $(selector).html(html, before/after)
+#### $(selector).html(html, before/after/append/prepend)
 *Gets or optionally sets the inner HTML for a selector. Optionally inserts HTML before or after the element.*
 
 **html** with no arguments will return either an HTML string (only one matching DOM element found) or array of HTML strings (more than one matching DOM element found).
 
-If only the *html* argument is specified, this will replace the inner HTML of the DOM element. Optionally *before* inserts *html* before the DOM element and *after* inserts *html* after the DOM element
+If only the *html* argument is specified, this will replace the inner HTML of the DOM element. Optionally *before* inserts *html* before the DOM element and *after* inserts *html* after the DOM element. *prepend* inserts *html* before the selectors inner elements and *append* inserts *html* after the selectors inner elements.
 
 ```html
 <!DOCTYPE html>
@@ -315,8 +315,10 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 <script>
 	$('p').html(); // returns an inner HTML of all paragraph elements, as there is more than one paragraph element, an array ['Foo','Bar']
 	$('p').html('<i>Foobar</i>'); // Sets the inner HTML of all paragraph elements to "<i>Foobar</i>"
-	$('p').html('<p>Foobar</p>','after'); // Inserts "<p>Foobar</p>" after all paragraph elements
-	$('p').html('<p>Foobar</p>','before'); // Inserts "<p>Foobar</p>" before all paragraph elements
+	$('p').html('<i>Foobar</i>','after'); // Inserts "<i>Foobar</i>" after all paragraph elements
+	$('p').html('<i>Foobar</i>','before'); // Inserts "<i>Foobar</i>" before all paragraph elements
+	$('p').html('<i>Foobar</i>','append'); // Inserts "<i>Foobar</i>" after all paragraph child elements
+	$('p').html('<i>Foobar</i>','prepend'); // Inserts "<i>Foobar</i>" before all paragraph child elements
 </script>
 </body>
 </html>
