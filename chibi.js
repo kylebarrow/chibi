@@ -1,10 +1,4 @@
-/*Chibi v1.0.11, Copyright (C) 2013 Kyle Barrow
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
+/*!chibi 1.0.12, Copyright 2014 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -270,7 +264,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		};
 		// Executes a function on nodes
 		cb.loop = function (fn) {
-			if (typeof fn === "function") {
+			if (typeof fn === 'function') {
 				nodeLoop(function (elm) {
 					// <= IE 8 loses scope so need to apply
 					return fn.apply(elm, arguments);
@@ -297,7 +291,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 				case 'odd':
 				case 'even':
-					for (i = (filter === "odd") ? 0 : 1; i < nodes.length; i += 2) {
+					for (i = (filter === 'odd') ? 0 : 1; i < nodes.length; i += 2) {
 						temp.push(nodes[i]);
 					}
 					nodes = temp;
@@ -334,7 +328,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		};
 		// Remove node
 		cb.remove = function () {
-			var removed = nodes.length;
 
 			nodeLoop(function (elm) {
 				// Catch error in unlikely case elm has been removed
@@ -385,7 +378,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				if (classes) {
 					switch (action) {
 					case 'add':
-						elm.className = classname + " " + classes;
+						elm.className = classname + ' ' + classes;
 						break;
 
 					case 'replace':
@@ -401,20 +394,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 							search = new RegExp('\\b' + classarray[i] + '\\b', 'g');
 
-							if (action === "has") {
+							if (action === 'has') {
 								if (!classname.match(search)) {
 									has = false;
 									break;
 								}
-							} else if (action === "toggle") {
-								elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + " " + classarray[i];
+							} else if (action === 'toggle') {
+								elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + ' ' + classarray[i];
 							} else { // replace
 								elm.className = elm.className.replace(search, '');
 							}
 
 						}
 
-						if (action === "has") {
+						if (action === 'has') {
 							values.push(has);
 						}
 

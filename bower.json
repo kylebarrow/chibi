@@ -1,17 +1,15 @@
 {
   "name": "chibi",
   "main": "chibi.js",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "homepage": "https://github.com/kylebarrow/chibi",
   "authors": [
     "Kyle Barrow"
   ],
-  "description": "A tiny JavaScript micro-framework from @kylebarrow",
+  "description": "A tiny JavaScript micro-library",
   "keywords": [
     "javascript",
-    "microframework",
-    "tiny",
-    "jquery"
+    "microlibrary"
   ],
   "license": "MIT",
   "ignore": [

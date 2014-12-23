@@ -1,10 +1,10 @@
-# Chibi v1.0.11
+# Chibi v1.0.12
 
-#### A tiny JavaScript micro-framework
+#### A tiny JavaScript micro-library
 
-Think it's OK to serve up 30KB of framework over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
+Think it's OK to serve up 30KB over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-framework that allows you to do awesome things, asshatory free.
+Working on something a wee bit more complex? Unlike fat, grown-up frameworks and libraries, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-library that allows you to do awesome things, asshatory free.
 
 ### The sweet, juicy bits
 
@@ -12,7 +12,7 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks, Ch
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
 * Even supports creaky old browsers like IE6.
 * No animation cruft, instead use CSS transitions like a nice person.
-* In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up frameworks.
+* In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up libraries.
 
 ### The lumpy, chewy bits
 
@@ -41,7 +41,7 @@ Chibi has been tested with and supports the following browsers:
 Chibi should also work with any other browser that supports `document.querySelectorAll()`.
 ### Using Chibi
 
-Chibi syntax is similar to that pioneered by jQuery: `$(selector).method()`. It intentionally uses the same `$` namespace as jQuery because micro-frameworks and grown-up frameworks should never mix.
+Chibi syntax is similar to that pioneered by jQuery: `$(selector).method()`. It intentionally uses the same `$` namespace as jQuery because micro-libraries and grown-up libraries should never mix.
 
 Chibi's supports standard CSS selectors but you can also pass in DOM elements directly:
 

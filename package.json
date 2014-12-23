@@ -1,0 +1,26 @@
+{
+  "name": "chibi",
+  "main": "chibi.js",
+  "version": "1.0.12",
+  "author": "Kyle Barrow",
+  "description": "A tiny JavaScript micro-library",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kylebarrow/chibi.git"
+  },
+  "homepage": "https://github.com/kylebarrow/chibi",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-jshint": "^1.6.1",
+    "gulp-notify": "^2.0.0",
+    "gulp-qunit": "^0.3.3",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.4.0",
+    "gulp-uglify": "^0.3.0",
+    "qunitjs": "^1.14.0"
+  },
+  "engines": {
+    "node": ">=0.10.x"
+  }
+}
