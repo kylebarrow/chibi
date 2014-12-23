@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-	notify = require("gulp-notify"),
+	notify = require('gulp-notify'),
 	replace = require('gulp-replace'),
 	jshint = require('gulp-jshint'),
 	rename = require('gulp-rename'),
