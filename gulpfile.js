@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 var paths = {
 	source: ['chibi.js'],
 	bower: ['bower.json'],
+	readme: ['README.md'],
 	test: ['tests/runner.html']
 };
 
@@ -23,9 +24,13 @@ gulp.task('update', function(callback) {
 		.pipe(replace(/("version": ")([\d\.]*)(",)/g, '$1'+package.version+'$3'))
 		.pipe(gulp.dest(''));
 	gulp.src(paths.source)
-		.pipe(replace(/(\/\*!)(.*)(\*\/)/g, '$1'+package.name+' '+package.version+', Copyright '+(new Date()).getUTCFullYear()+' '+package.author+', released under '+package.license+' license $3'))
+		.pipe(replace(/(\/\*!)(.*)(\*\/)/g, '$1'+package.name+' '+package.version+', Copyright 2012-'+(new Date()).getUTCFullYear()+' '+package.author+', released under '+package.license+' license $3'))
+		.pipe(gulp.dest(''))
+	gulp.src(paths.readme)
+		.pipe(replace(/(\# Chibi v)([\d\.]*)/g, '$1'+package.version))
 		.pipe(gulp.dest(''))
 		.on('end', callback)
+		//# Chibi v1.1.1
 });
 
 gulp.task('lint', function() {

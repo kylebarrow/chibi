@@ -1,4 +1,4 @@
-# Chibi v1.1.1
+# Chibi v1.1.2
 
 #### A tiny JavaScript micro-library
 
@@ -453,6 +453,13 @@ For cross-domain requests, **ajax** uses JSONP by default but this is overridden
 </script>
 </body>
 </html>
+```
+
+### Modify, build, contribute
+
+```shell
+npm install
+gulp
 ```
 
 ##### FIN
