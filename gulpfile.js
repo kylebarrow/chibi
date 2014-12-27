@@ -5,7 +5,7 @@ var gulp = require('gulp'),
 	rename = require('gulp-rename'),
 	uglify = require('gulp-uglify'),
 	qunit = require('gulp-qunit'),
-	package = require('package.json');
+	package = require('./package.json');
 
 var paths = {
 	source: ['chibi.js'],
@@ -29,8 +29,7 @@ gulp.task('update', function(callback) {
 	gulp.src(paths.readme)
 		.pipe(replace(/(\# Chibi v)([\d\.]*)/g, '$1'+package.version))
 		.pipe(gulp.dest(''))
-		.on('end', callback)
-		//# Chibi v1.1.1
+		.on('end', callback);
 });
 
 gulp.task('lint', function() {
