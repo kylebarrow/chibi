@@ -1,4 +1,4 @@
-/*!chibi 1.1.4, Copyright 2012-2014 Kyle Barrow, released under MIT license */
+/*!chibi 1.1.5, Copyright 2012-2015 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -756,12 +756,10 @@
 						}
 					};
 
+					xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
 					if (method === 'POST') {
 						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-					}
-
-					if (nojsonp) {
-						xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 					}
 
 					xhr.send(query);
