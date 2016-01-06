@@ -190,12 +190,13 @@ asyncTest('Get Ajax JSON ', function() {
 	});
 });
 
+
 asyncTest('Get Ajax JSON with cache control', function() {
 	expect( 2 );
 
 	$({foo:'1',bar:'2'}).ajax('mockjax','get',function(data, status){
 		start();
-		equal(/foo=1&bar=2&_ts=[0-9]*/.test(data), true ,'Get JSON with cache control');
+		equal(/^foo=1&bar=2&_ts=[0-9]*/.test(data), true ,'Get JSON with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -239,7 +240,7 @@ asyncTest('Get Ajax with existing query string and cache control', function() {
 	$({foo:'a',bar:'b'}).ajax('mockjax?foobar=c','get',function(data, status){
 		start();
 
-		equal(/foobar=c&foo=a&bar=b&_ts=[0-9]*/.test(data), true ,'Get Ajax');
+		equal(/^foobar=c&foo=a&bar=b&_ts=[0-9]*$/.test(data), true ,'Get Ajax');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -277,7 +278,8 @@ asyncTest('Get Ajax form', function() {
 
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
-		equal(data, 'number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2' ,'Get form');
+		// Include catch for filter text input in Qunit
+		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -293,7 +295,7 @@ asyncTest('Get Ajax form with cache control', function() {
 
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
-		equal(/number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2&_ts=[0-9]*/.test(data), true ,'Get form with cache control');
+		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -309,7 +311,7 @@ asyncTest('Post Ajax form', function() {
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(data, 'number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2' ,'Post form');
+		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -325,7 +327,7 @@ asyncTest('Post Ajax form with cache control', function() {
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(data, 'number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2' ,'Post form with cache control');
+		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -391,7 +393,7 @@ test('Event actioned', function() {
 	equal($('#on').val(), 'foobar' ,'Event actioned');
 });
 
-test('Remove event', function() {
+test('Remove event (depreciated)', function() {
 
 	$('#on').val('');
 
@@ -404,6 +406,25 @@ test('Remove event', function() {
 	else
 	{
 		$('#on').on('click',evented,true);
+		$('#on').find().click();
+	}
+
+	equal($('#on').val(), '' ,'Event removed');
+});
+
+test('Remove event', function() {
+
+	$('#on').val('');
+
+	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
+		$('#on').find().blur();
+		$('#on').off('focus',evented,true);
+		$('#on').find().focus();
+		$('#on').find().blur();
+	}
+	else
+	{
+		$('#on').off('click',evented,true);
 		$('#on').find().click();
 	}
 

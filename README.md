@@ -1,4 +1,4 @@
-# Chibi v1.1.5
+# Chibi v2.0.0
 
 #### A tiny JavaScript micro-library
 
@@ -374,7 +374,7 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 ```
 
 #### $(selector).on(event, listener, clear)
-*Adds an event listener to the selector, optionally clears the event listener.*
+*Adds an event listener to the selector, optionally clears the event listener (depreciated, use .off to clear events).*
 
 **on** adds an event listener to the selector. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
 
@@ -394,6 +394,32 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 
 	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs
 	$('p').on('click',foo,true); // removes the 'foo' click event listener from all paragraphs
+</script>
+</body>
+</html>
+```
+
+#### $(selector).off(event, listener)
+*Removed an event listener to the selector.*
+
+**off** removed an event listener to the selector. There is no need to use the HTML event format ('off' + event) as Chibi will automatically prefix the event as required. **off** also supports passing `window` and `document` as the selector.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	function foo() {
+		// Do awesome
+	}
+
+	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs
+	$('p').off('click',foo); // removes the 'foo' click event listener from all paragraphs
 </script>
 </body>
 </html>

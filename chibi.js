@@ -1,4 +1,4 @@
-/*!chibi 1.1.5, Copyright 2012-2015 Kyle Barrow, released under MIT license */
+/*!chibi 2.0.0, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -643,7 +643,7 @@
 				return returnValues(values);
 			}
 		};
-		// Event handler
+		// Add event handler
 		cb.on = function (event, fn, clear) {
 
 			if (selector === w || selector === d) {
@@ -671,6 +671,10 @@
 					}
 				}
 			}, nodes);
+		};
+		// Remove event handler
+		cb.off = function (event, fn) {
+			cb.on(event, fn, true);
 		};
 		// Basic XHR 1, no file support. Shakes fist at IE
 		cb.ajax = function (url, method, callback, nocache, nojsonp) {
