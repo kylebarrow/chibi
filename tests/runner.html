@@ -84,7 +84,6 @@ test('Selector', function() {
 
 
 test('Loop', function() {
-
 	$("i").loop(function(e){ e.style.color = "red" });
 
 	var firstcolor  = $('i').find('first').style.color;
@@ -158,9 +157,6 @@ test('Class', function() {
 
 	equal($('#cls').hasClass('bolder'), true  ,'Has class (true) via alias');
 	equal($('#cls').hasClass('bold'), false  ,'Has class (false) via alias');
-
-
-
 });
 
 test('HTML', function() {
@@ -187,7 +183,6 @@ test('Attribute', function() {
 });
 
 test('Form', function() {
-
 	deepEqual($('select').val(), [null,'2',['1','3']], 'Get select');
 
 
@@ -222,7 +217,17 @@ asyncTest('Get Ajax JSON with cache control', function() {
 
 	$({foo:'1',bar:'2'}).ajax('mockjax','get',function(data, status){
 		start();
-		equal(/^foo=1&bar=2&_ts=[0-9]*/.test(data), true ,'Get JSON with cache control');
+		equal(/^foo=1&bar=2&_ts=[0-9]*$/.test(data), true ,'Get JSON with cache control');
+		equal(status, 200, 'Response status');
+	},true);
+});
+
+asyncTest('Get Ajax JSON with no query and cache control', function() {
+	expect( 2 );
+
+	$({}).ajax('mockjax','get',function(data, status){
+		start();
+		equal(/^_ts=[0-9]*$/.test(data), true ,'Get JSON with no query and with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -294,7 +299,6 @@ asyncTest('Post Ajax with existing query string and cache control', function() {
 });
 
 asyncTest('Get Ajax form', function() {
-
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
@@ -311,7 +315,6 @@ asyncTest('Get Ajax form', function() {
 });
 
 asyncTest('Get Ajax form with cache control', function() {
-
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
@@ -327,7 +330,6 @@ asyncTest('Get Ajax form with cache control', function() {
 });
 
 asyncTest('Post Ajax form', function() {
-
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
@@ -343,7 +345,6 @@ asyncTest('Post Ajax form', function() {
 });
 
 asyncTest('Post Ajax form with cache control', function() {
-
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
@@ -359,7 +360,6 @@ asyncTest('Post Ajax form with cache control', function() {
 });
 
 asyncTest('JSONP Ajax', function() {
-
 	expect( 2 );
 
 
@@ -374,7 +374,6 @@ asyncTest('JSONP Ajax', function() {
 });
 
 asyncTest('JSONP Ajax JSON', function() {
-
 	expect( 2 );
 
 	$({sort: "created", direction: "asc", callback: "?"}).ajax('https://api.github.com/users/kylebarrow/repos','get',function(data, status){
@@ -398,7 +397,6 @@ function evented(e) {
 
 
 asyncTest('Add event', function() {
-
 	expect( 1 );
 
 	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {

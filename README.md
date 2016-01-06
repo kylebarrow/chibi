@@ -8,9 +8,9 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks and
 
 ### The sweet, juicy bits
 
-* Chibi is really tiny: 6KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
+* Chibi is really tiny: 7KB minified, 2KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
-* Even supports creaky old browsers like IE6.
+* Even supports creaky old browsers like IE6, I don't know why you would do this.
 * No animation cruft, instead use CSS transitions like a nice person.
 * In modern browsers, Chibi typically executes DOM manipulation 20% to 50% faster than grown-up libraries.
 

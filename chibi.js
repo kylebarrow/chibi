@@ -704,7 +704,7 @@
 		cb.ajax = function (url, method, callback, nocache, nojsonp) {
 			var xhr,
 				query = serializeData(nodes),
-				querystart = (url.indexOf('?') === -1) ? '?' : '&',
+				type = (method) ? method.toUpperCase() : 'GET',
 				hostsearch = new RegExp('http[s]?://(.*?)/', 'gi'),
 				domain = hostsearch.exec(url),
 				timestamp = '_ts=' + (+new Date()),
@@ -712,13 +712,17 @@
 				jsonpcallback = 'chibi' + (+new Date()) + (jsonpcount += 1),
 				script;
 
+
+			if (query && (type === 'GET' || type === 'DELETE')) {
+				url += (url.indexOf('?') === -1) ? '?' + query : '&' + query;
+				query = null;
+			}
+
 			// JSONP if cross domain url
 			if (!nojsonp && domain && w.location.host !== domain[1]) {
 
-				url += querystart + query;
-
 				if (nocache) {
-					url += '&' + timestamp;
+					url += (url.indexOf('?') === -1) ? '?' + timestamp : '&' + timestamp;
 				}
 
 				// Replace possible encoded ?
@@ -753,8 +757,6 @@
 
 			} else {
 
-				method = method || 'GET';
-
 				if (w.XMLHttpRequest) {
 					xhr = new XMLHttpRequest();
 				} else if (w.ActiveXObject) {
@@ -762,19 +764,13 @@
 				}
 
 				if (xhr) {
-					method = method.toUpperCase();
-
-					if (method === 'GET') {
-						url += querystart + query;
-						query = null;
-					}
 
 					if (nocache) {
-						url += (method === 'POST') ? querystart + timestamp : '&' + timestamp;
+						url += (url.indexOf('?') === -1) ? '?' + timestamp : '&' + timestamp;
 					}
 
 					// Douglas Crockford: "Synchronous programming is disrespectful and should not be employed in applications which are used by people"
-					xhr.open(method, url, true);
+					xhr.open(type, url, true);
 
 					xhr.onreadystatechange = function () {
 						if (xhr.readyState === 4) {
@@ -786,7 +782,7 @@
 
 					xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
-					if (method === 'POST') {
+					if (type === 'POST' || type === 'PUT') {
 						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 					}
 
