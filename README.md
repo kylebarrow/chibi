@@ -664,6 +664,88 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 </html>
 ```
 
+#### $(selector).get(url, callback, nocache, nojsonp)
+*Sends a GET AJAX request, optionally firing a callback with the XHR `responseText` and `status`. Alias of $(selector).ajax with GET method*
+
+When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
+
+**get** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
+
+For cross-domain requests, **get** uses JSONP by default but this is overridden when *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **get** url.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<form>
+<input type="text" value="Foobar" name="text">
+</form>
+<script>
+	// XHR all form data using "GET" to "ajax.html"
+	$('form').get('ajax.html');
+
+	// XHR the JSON using "GET" to "ajax.html"
+	$({text:'Foo Bar'}).get('ajax.html');
+
+</script>
+</body>
+</html>
+```
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<script>
+	// JSONP
+	$().get('https://api.github.com/users/kylebarrow/repos?sort=created&direction=asc&callback=?',function(data,status){
+		// Do awesome
+	});
+
+	// JSONP with JSON query
+	$({sort: "created", direction: "asc", callback: "?"}).get('https://api.github.com/users/kylebarrow/repos',function(data,status){
+		// Do awesome
+	});
+</script>
+</body>
+</html>
+```
+
+#### $(selector).post(url, callback, nocache)
+*Sends a POST AJAX request, optionally firing a callback with the XHR `responseText` and `status`. Alias of $(selector).ajax with POST method*
+
+When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
+
+**post** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<form>
+<input type="text" value="Foobar" name="text">
+</form>
+<script>
+	// XHR the JSON using "POST" to "ajax.html"
+	$({text:'Foo Bar'}).post('ajax.html');	
+	
+	// XHR all form data using "POST" to "ajax.html", returns responseText and status, adds a cache busting time stamp
+	$('form').post('ajax.html',function(data,status){
+		// Do awesome
+	},true);
+</script>
+</body>
+</html>
+```
+
 #### $(selector).ajax(url, method, callback, nocache, nojsonp)
 *Sends an AJAX request, optionally firing a callback with the XHR `responseText` and `status`*
 

@@ -807,6 +807,14 @@
 				}
 			}
 		};
+		// Alias to cb.ajax(url, 'get', callback, nocache, nojsonp)
+		cb.get = function (url, callback, nocache, nojsonp) {
+			cb.ajax(url, 'get', callback, nocache, nojsonp);
+		};
+		// Alias to cb.ajax(url, 'post', callback, nocache)
+		cb.post = function (url, callback, nocache) {
+			cb.ajax(url, 'post', callback, nocache);
+		};
 
 		return cb;
 	}

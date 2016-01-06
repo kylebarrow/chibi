@@ -309,6 +309,26 @@ asyncTest('Post Ajax with existing query string and cache control', function() {
 	},true);
 });
 
+asyncTest('Get Ajax JSON via alias', function() {
+	expect( 2 );
+
+	$({foo:'a',bar:'b'}).get('mockjax',function(data, status){
+		start();
+		equal(data, 'foo=a&bar=b' ,'Get JSON via alias');
+		equal(status, 200, 'Response status');
+	});
+});
+
+asyncTest('Post Ajax JSON via alias', function() {
+	expect( 2 );
+
+	$({foo:'a',bar:'b'}).post('mockjax',function(data, status){
+		start();
+		equal(data, 'foo=a&bar=b' ,'Post JSON via alias');
+		equal(status, 200, 'Response status');
+	});
+});
+
 asyncTest('Get Ajax form', function() {
 	expect( 2 );
 
