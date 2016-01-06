@@ -262,6 +262,169 @@ p {display:none}
 </html>
 ```
 
+	$('#cls').setClass(' bolder  ');
+	equal($('#cls').getClass(), 'bolder'  ,'Set class via alias');
+
+	$('#cls').addClass('bold   ');
+	equal($('#cls').getClass(), 'bolder bold'  ,'Add class via alias');
+
+	$('#cls').removeClass('bold');
+	equal($('#cls').getClass(), 'bolder'  ,'Remove class via alias');
+
+	$('#cls').addClass('    red ');
+	$('#cls').toggleClass('bolder');
+	equal($('#cls').getClass(), 'red'  ,'Toggle class via alias');
+
+	$('#cls').addClass('bolder');
+
+	equal($('#cls').hasClass('bolder'), true  ,'Has class (true) via alias');
+	equal($('#cls').hasClass('bold'), false  ,'Has class (false) via alias');
+
+#### $(selector).getClass()
+*Gets class for a selector. Alias of $(selector).cls()*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').getClass(); // returns classes set on all paragraph elements, as there is more than one paragraph element, an array ['', 'mono']
+</script>
+</body>
+</html>
+```
+
+#### $(selector).setClass(class)
+*Sets class for a selector, replacing any DOM element class with this class. Alias of $(selector).cls(class)*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').setClass('red bold'); // sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
+</script>
+</body>
+</html>
+```
+
+#### $(selector).addClass(class)
+*Adds class for a selector. Alias of $(selector).cls(class, 'add')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').addClass('mono'); // adds the "mono" class to all paragraph elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).removeClass(class)
+*Removes class for a selector. Alias of $(selector).cls(class, 'remove')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').removeClass('mono'); // remove the "mono" class to all paragraph elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).toggleClass(class)
+*Toggles class for a selector. Alias of $(selector).cls(class, 'toggle')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').toggleClass('mono'); // toggles the mono class on all paragraph elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).hasClass(class)
+*Returns true if the selector includes the class. Alias of $(selector).cls(class, 'has')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.bold {font-weight:900}
+.red {color:red}
+.mono {font-family:monospace}
+</style>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p class="mono">Bar</p>
+<script>
+	$('p').cls('mono'); // returns true if the paragraph element includes the 'mono' class, as there is more than one paragraph element, an array [false, true]
+</script>
+</body>
+</html>
+```
+
+
 #### $(selector).cls(class, replace/add/remove/toggle/has)
 *Gets or optionally sets the class for a selector.*
 

@@ -424,6 +424,30 @@
 			}
 
 		};
+		// Alias to cb.cls()
+		cb.getClass = function () {
+			return cb.cls();
+		};
+		// Alias to cb.cls(classes)
+		cb.setClass = function (classes) {
+			return cb.cls(classes);
+		};
+		// Alias to cb.cls(classes, 'add')
+		cb.addClass = function (classes) {
+			return cb.cls(classes, 'add');
+		};
+		// Alias to cb.cls(classes, 'remove')
+		cb.removeClass = function (classes) {
+			return cb.cls(classes, 'remove');
+		};
+		// Alias to cb.cls(classes, 'toggle')
+		cb.toggleClass = function (classes) {
+			return cb.cls(classes, 'toggle');
+		};
+		// Alias to cb.cls(classes, 'toggle')
+		cb.hasClass = function (classes) {
+			return cb.cls(classes, 'has');
+		};
 		// Get/Set innerHTML optionally before/after
 		cb.html = function (value, location) {
 			var values = [], tmpnodes, tmpnode;
