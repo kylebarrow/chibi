@@ -487,6 +487,22 @@
 				return returnValues(values);
 			}
 		};
+		// Alias to cb.html(value, 'before')
+		cb.htmlBefore = function (value) {
+			return cb.html(value, 'before');
+		};
+		// Alias to cb.html(value, 'before')
+		cb.htmlAfter = function (value) {
+			return cb.html(value, 'after');
+		};
+		// Alias to cb.html(value, 'append')
+		cb.htmlAppend = function (value) {
+			return cb.html(value, 'append');
+		};
+		// Alias to cb.html(value, 'append')
+		cb.htmlPrepend = function (value) {
+			return cb.html(value, 'prepend');
+		};
 		// Get/Set HTML attributes
 		cb.attr = function (name, value) {
 			var values = [];

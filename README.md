@@ -4,7 +4,7 @@
 
 Think it's OK to serve up 30KB over 3G just to manipulate a couple of DOM elements? Of course you don't because that's an asshat move and you're no asshat. You'll probably instead use a couple of lines of vanilla JavaScript, perhaps a little CSS `:active` with transitions, all while riding a unicorn bareback through a double rainbow, no hands.
 
-Working on something a wee bit more complex? Unlike fat, grown-up frameworks and libraries, Chibi focuses on just the essentials, melted down and mixed with optimization rainbows to create a really light micro-library that allows you to do awesome things, asshatory free.
+Working on something a wee bit more complex? Unlike fat, grown-up frameworks and libraries, Chibi focuses on just the essentials, melted down and mixed with optimisation rainbows to create a really light micro-library that allows you to do awesome things, asshatory free.
 
 ### The sweet, juicy bits
 
@@ -482,6 +482,82 @@ If only the *html* argument is specified, this will replace the inner HTML of th
 	$('p').html('<i>Foobar</i>','before'); // Inserts "<i>Foobar</i>" before all paragraph elements
 	$('p').html('<i>Foobar</i>','append'); // Inserts "<i>Foobar</i>" after all paragraph child elements
 	$('p').html('<i>Foobar</i>','prepend'); // Inserts "<i>Foobar</i>" before all paragraph child elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).htmlBefore(value)
+*Inserts html before a selector. Alias of $(selector).html(value, 'before')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	$('p').htmlBefore('<i>Foobar</i>'); // Inserts "<i>Foobar</i>" before all paragraph elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).htmlAfter(value)
+*Inserts html after a selector. Alias of $(selector).html(value, 'after')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	$('p').htmlAfter('<i>Foobar</i>'); // Inserts "<i>Foobar</i>" after all paragraph elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).htmlAppend(value)
+*Inserts html after a selectors inner elements. Alias of $(selector).html(value, 'append')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	$('p').htmlAppend('<i>Foobar</i>'); // Inserts "<i>Foobar</i>" after all paragraph child elements
+</script>
+</body>
+</html>
+```
+
+#### $(selector).htmlPrepend(value)
+*Inserts html before a selectors inner elements. Alias of $(selector).html(value, 'prepend')*
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p>Foo</p>
+<p>Bar</p>
+<script>
+	$('p').htmlPrepend('<i>Foobar</i>'); // Inserts "<i>Foobar</i>" before all paragraph child elements
 </script>
 </body>
 </html>

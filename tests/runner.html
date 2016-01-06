@@ -170,6 +170,17 @@ test('HTML', function() {
 	var linebreaks = new RegExp('(\r\n|\n|\r)', 'gm')
 
 	equal($('#html').html().toLowerCase().replace(linebreaks,''), '<p></p><b><sup></sup><i></i></b><div></div>'  ,'HTML');
+
+	// Reset to alias test
+	$('#html').html('<b></b>');
+
+	$('#html b').htmlBefore('<p></p>');
+	$('#html b').htmlAfter('<div></div>');
+	$('#html b').htmlAppend('<i></i>');
+	$('#html b').htmlPrepend('<sup></sup>');
+
+	equal($('#html').html().toLowerCase().replace(linebreaks,''), '<p></p><b><sup></sup><i></i></b><div></div>'  ,'HTML aliases');
+
 });
 
 test('Attribute', function() {
