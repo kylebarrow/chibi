@@ -262,24 +262,6 @@ p {display:none}
 </html>
 ```
 
-	$('#cls').setClass(' bolder  ');
-	equal($('#cls').getClass(), 'bolder'  ,'Set class via alias');
-
-	$('#cls').addClass('bold   ');
-	equal($('#cls').getClass(), 'bolder bold'  ,'Add class via alias');
-
-	$('#cls').removeClass('bold');
-	equal($('#cls').getClass(), 'bolder'  ,'Remove class via alias');
-
-	$('#cls').addClass('    red ');
-	$('#cls').toggleClass('bolder');
-	equal($('#cls').getClass(), 'red'  ,'Toggle class via alias');
-
-	$('#cls').addClass('bolder');
-
-	equal($('#cls').hasClass('bolder'), true  ,'Has class (true) via alias');
-	equal($('#cls').hasClass('bold'), false  ,'Has class (false) via alias');
-
 #### $(selector).getClass()
 *Gets class for a selector. Alias of $(selector).cls()*
 

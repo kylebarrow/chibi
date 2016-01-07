@@ -40,7 +40,7 @@ gulp.task('lint', function() {
 		.on('error', handleError);
 });
 
-gulp.task('compress', ['update'], function() {
+gulp.task('compress', function() {
 	gulp.src(paths.source)
 		.pipe(rename('chibi-min.js'))
 		.pipe(uglify({
