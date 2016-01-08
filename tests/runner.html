@@ -74,72 +74,49 @@ asyncTest('Loaded', function() {
 
 
 test('Selector', function() {
-	equal($('i').find().length, 5, 'All elements');
-	equal($('i').find('first').innerHTML, 'Element 1', 'Find first element');
-	equal($('i').find('odd').length, 3, 'Find odd elements');
-	equal($('i').find('even').length, 2, 'Find even elements');
-	equal($('i').find('last').innerHTML, 'Element 5', 'Find last element');
+	equal($('i').length, 5, 'All elements');
+	equal($('i').first()[0].innerHTML, 'Element 1', 'Find first element');
+	equal($('i').odd().length, 3, 'Find odd elements');
+	equal($('i').even().length, 2, 'Find even elements');
+	equal($('i').last()[0].innerHTML, 'Element 5', 'Find last element');
 });
 
 
 
-test('Loop', function() {
-	$("i").loop(function(e){ e.style.color = "red" });
+test('Each', function() {
+	$("i").each(function(e){ e.style.color = "red" });
 
-	var firstcolor  = $('i').find('first').style.color;
-	var lastcolor  = $('i').find('last').style.color;
+	var firstcolor  = $('i').first()[0].style.color;
+	var lastcolor  = $('i').last()[0].style.color;
 
-	equal( (firstcolor === 'red' || firstcolor === '#ff0000'), true, 'Loop start');
-	equal( (lastcolor === 'red' || lastcolor === '#ff0000'), true, 'Loop end');
+	equal( (firstcolor === 'red' || firstcolor === '#ff0000'), true, 'Each start');
+	equal( (lastcolor === 'red' || lastcolor === '#ff0000'), true, 'Each end');
 });
-
+//
 
 test('Visibility', function() {
 	$('#visible').hide();
-	equal($('#visible').find().style.display, 'none', 'Hide');
+	equal($('#visible')[0].style.display, 'none', 'Hide');
 
 	$('#hidden').show();
-	equal($('#hidden').find().style.display, '', 'Show');
+	equal($('#hidden')[0].style.display, '', 'Show');
 
 	$('#hidden').toggle();
-	equal($('#hidden').find().style.display, 'none', 'Toogle');
+	equal($('#hidden')[0].style.display, 'none', 'Toogle');
 });
 
 test('Remove', function() {
 	$('#remove').remove();
-	equal($('#remove').find(), false, 'Remove');
+	equal($('#remove').length, 0, 'Remove');
 });
 
 test('Style', function() {
 	$('#css').css('font-family','monospace');
-	equal($('#css').find().style.fontFamily, 'monospace', 'Set CSS');
+	equal($('#css')[0].style.fontFamily, 'monospace', 'Set CSS');
 	equal($('#css').css('font-family'), 'monospace', 'Get CSS');
 });
 
 test('Class', function() {
-	$('#cls').cls(' bolder  ');
-	equal($('#cls').cls(), 'bolder'  ,'Set class');
-
-	$('#cls').cls('bold   ','add');
-	equal($('#cls').cls(), 'bolder bold'  ,'Add class');
-
-	$('#cls').cls('bold','remove');
-	equal($('#cls').cls(), 'bolder'  ,'Remove class');
-
-	$('#cls').cls('    red ','add');
-	$('#cls').cls('bolder','toggle');
-	equal($('#cls').cls(), 'red'  ,'Toggle class');
-
-	$('#cls').cls('bolder','add');
-
-	equal($('#cls').cls('bolder', 'has'), true  ,'Has class (true)');
-	equal($('#cls').cls('bold', 'has'), false  ,'Has class (false)');
-
-	// Reset for alias test
-	$('#cls').cls('red','remove');
-	$('#cls').cls('bolder','remove');
-	equal($('#cls').cls(), ''  ,'Reset class');
-
 	$('#cls').setClass(' bolder  ');
 	equal($('#cls').getClass(), 'bolder'  ,'Set class via alias');
 
@@ -160,19 +137,8 @@ test('Class', function() {
 });
 
 test('HTML', function() {
-	$('#html b').html('<p></p>','before');
-	$('#html b').html('<div></div>','after');
-	$('#html b').html('<i></i>','append');
-	$('#html b').html('<sup></sup>','prepend');
-
-
 	// Fix for IE sticking line breaks on insert after
-	var linebreaks = new RegExp('(\r\n|\n|\r)', 'gm')
-
-	equal($('#html').html().toLowerCase().replace(linebreaks,''), '<p></p><b><sup></sup><i></i></b><div></div>'  ,'HTML');
-
-	// Reset to alias test
-	$('#html').html('<b></b>');
+	var linebreaks = new RegExp('(\r\n|\n|\r)', 'gm');
 
 	$('#html b').htmlBefore('<p></p>');
 	$('#html b').htmlAfter('<div></div>');
@@ -189,25 +155,31 @@ test('Attribute', function() {
 	$('#attr').attr('href','http://barrow.io');
 
 	equal($('#attr').css('font-family'), 'monospace' ,'Style attribute');
-	equal($('#attr').cls(), 'red' ,'Class attribute');
+	equal($('#attr').getClass(), 'red' ,'Class attribute');
 	equal($('#attr').attr('href'), 'http://barrow.io' ,'Attribute');
 });
 
 test('Form', function() {
-	deepEqual($('select').val(), [null,'2',['1','3']], 'Get select');
+	var checkcount = [];
 
+	deepEqual($('select').val(), undefined, 'Get empty select');
+	equal($('#single_select').val(), '2', 'Get select');
+	deepEqual($('#multiple_select').val(), ['1','3'], 'Get multple select');
 
-	$('select').val('1');
+	$('#single_select').val('1');
+	deepEqual($('#single_select').val(), '1', 'Set select');
 
-	deepEqual($('select').val(), [null,'1','1'], 'Set select');
-
-
-	$('#qunit-fixture input').val('1');
-
-	deepEqual($('#qunit-fixture input').val(), ['1','1','1',null,null,'1','1','1','1'], 'Set and get input');
+	$('#multiple_select').val(['2','3']);
+	deepEqual($('#multiple_select').val(), ['2','3'], 'Set multple select');
 
 	$('#qunit-fixture textarea').val('1');
 	equal($('#qunit-fixture textarea').val(), '1' ,'Get and set textarea');
+
+	$('#qunit-fixture input').val('1');
+
+	$('#qunit-fixture input').each(function(elm){
+		equal($(elm).val(), '1', 'Set and get input');
+	})
 
 });
 
@@ -340,7 +312,7 @@ asyncTest('Get Ajax form', function() {
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
 		// Include catch for filter text input in Qunit
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -355,7 +327,7 @@ asyncTest('Get Ajax form with cache control', function() {
 
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -370,7 +342,7 @@ asyncTest('Post Ajax form', function() {
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -385,7 +357,7 @@ asyncTest('Post Ajax form with cache control', function() {
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -425,20 +397,18 @@ function evented(e) {
 	ok(true, 'Event added');
 }
 
-
-
 asyncTest('Add event', function() {
 	expect( 1 );
 
 	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
 		$('#on').on('focus',evented);
-		$('#on').find().focus();
+		$('#on')[0].focus();
 
 	}
 	else
 	{
 		$('#on').on('click',evented);
-		$('#on').find().click();
+		$('#on')[0].click();
 	}
 });
 
@@ -448,39 +418,22 @@ test('Event actioned', function() {
 	equal($('#on').val(), 'foobar' ,'Event actioned');
 });
 
-test('Remove event (depreciated)', function() {
-
-	$('#on').val('');
-
-	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
-		$('#on').find().blur();
-		$('#on').on('focus',evented,true);
-		$('#on').find().focus();
-		$('#on').find().blur();
-	}
-	else
-	{
-		$('#on').on('click',evented,true);
-		$('#on').find().click();
-	}
-
-	equal($('#on').val(), '' ,'Event removed');
-});
-
 test('Remove event', function() {
 
-	$('#on').val('');
+
 
 	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
-		$('#on').find().blur();
-		$('#on').off('focus',evented,true);
-		$('#on').find().focus();
-		$('#on').find().blur();
+		$('#on')[0].blur();
+		$('#on').off('focus',evented);
+		$('#on').val('');
+		$('#on')[0].focus();
+		$('#on')[0].blur();
 	}
 	else
 	{
-		$('#on').off('click',evented,true);
-		$('#on').find().click();
+		$('#on').off('click',evented);
+		$('#on').val('');
+		$('#on')[0].click();
 	}
 
 	equal($('#on').val(), '' ,'Event removed');
@@ -501,11 +454,11 @@ test('Remove event', function() {
 
 	<form>
 		<select name="empty_select"></select>
-		<select name="single_select">
+		<select name="single_select" id="single_select">
 		    <option value="1"></option>
 		    <option value="2" selected="selected"></option>
 		</select>
-		<select multiple="multiple" name="multiple_select[]">
+		<select multiple="multiple" name="multiple_select[]" id="multiple_select">
 		    <option selected="selected" value="1"></option>
 		    <option value="2"></option>
 		    <option selected="selected" value="3"></option>
@@ -527,6 +480,7 @@ test('Remove event', function() {
 </div>
 
 <!-- Intergration test DOM -->
+<div id="chain"></div>
 <div id="visible"></div>
 <div id="hidden" style="display:none"></div>
 <div id="remove"></div>
