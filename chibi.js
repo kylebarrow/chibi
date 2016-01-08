@@ -1,4 +1,4 @@
-/*!chibi 2.0.0, Copyright 2012-2016 Kyle Barrow, released under MIT license */
+/*!chibi 3.0.0, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -14,7 +14,6 @@
 	function fireReady() {
 		var i;
 		domready = true;
-
 		for (i = 0; i < readyfn.length; i += 1) {
 			readyfn[i]();
 		}
@@ -25,12 +24,10 @@
 	function fireLoaded() {
 		var i;
 		pageloaded = true;
-
 		// For browsers with no DOM loaded support
 		if (!domready) {
 			fireReady();
 		}
-
 		for (i = 0; i < loadedfn.length; i += 1) {
 			loadedfn[i]();
 		}
@@ -57,7 +54,6 @@
 	// Loop through node array
 	function nodeLoop(fn, nodes) {
 		var i;
-
 		// Good idea to walk up the DOM
 		for (i = nodes.length - 1; i >= 0; i -= 1) {
 			fn(nodes[i]);
@@ -91,29 +87,15 @@
 	// Show CSS
 	function showCss(elm) {
 		elm.style.display = '';
-
 		// For elements still hidden by style block
 		if (computeStyle(elm, 'display') === 'none') {
 			elm.style.display = 'block';
 		}
 	}
 
-	// Handle standard method value returns
-	function returnValues(values) {
-		values = values.reverse();
-
-		// Return string for singles
-		if (values.length === 1) {
-			values = values[0];
-		}
-
-		return values;
-	}
-
 	// Serialize form & JSON values
 	function serializeData(nodes) {
 		var querystring = '', subelm, i, j;
-
 		if (nodes.constructor === Object) { // Serialize JSON data
 			for (subelm in nodes) {
 				if (nodes.hasOwnProperty(subelm)) {
@@ -126,9 +108,7 @@
 					}
 				}
 			}
-
 		} else { // Serialize node data
-
 			nodeLoop(function (elm) {
 				if (elm.nodeName === 'FORM') {
 					for (i = 0; i < elm.elements.length; i += 1) {
@@ -178,9 +158,60 @@
 		return (querystring.length > 0) ? querystring.substring(1) : '';
 	}
 
+	// Class helper
+	function classHelper(classes, action, nodes) {
+		var classarray, search, i, has = false;
+		if (classes) {
+			// Trim any whitespace
+			classarray = classes.split(/\s+/);
+			nodeLoop(function (elm) {
+				for (i = 0; i < classarray.length; i += 1) {
+					search = new RegExp('\\b' + classarray[i] + '\\b', 'g');
+					if (action === 'remove') {
+						elm.className = elm.className.replace(search, '');
+					} else if (action === 'toggle') {
+						elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + ' ' + classarray[i];
+					} else if (action === 'has') {
+						if (elm.className.match(search)) {
+							has = true;
+							break;
+						}
+					}
+				}
+			}, nodes);
+		}
+		return has;
+	}
+
+	// HTML insertion helper
+	function insertHtml(value, position, nodes) {
+		var tmpnodes, tmpnode;
+		if (value) {
+			nodeLoop(function (elm) {
+				// No insertAdjacentHTML support for FF < 8 and IE doesn't allow insertAdjacentHTML table manipulation, so use this instead
+				// Convert string to node. We can't innerHTML on a document fragment
+				tmpnodes = d.createElement('div');
+				tmpnodes.innerHTML = value;
+				while ((tmpnode = tmpnodes.lastChild) !== null) {
+					// Catch error in unlikely case elm has been removed
+					try {
+						if (position === 'before') {
+							elm.parentNode.insertBefore(tmpnode, elm);
+						} else if (position === 'after') {
+							elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
+						} else if (position === 'append') {
+							elm.appendChild(tmpnode);
+						} else if (position === 'prepend') {
+							elm.insertBefore(tmpnode, elm.firstChild);
+						}
+					} catch (e) {break; }
+				}
+			}, nodes);
+		}
+	}
+
 	// Get nodes and return chibi
 	function chibi(selector) {
-
 		var cb, nodes = [], json = false, nodelist, i;
 
 		if (selector) {
@@ -247,6 +278,7 @@
 			if (fn) {
 				if (domready) {
 					fn();
+					return cb;
 				} else {
 					readyfn.push(fn);
 				}
@@ -257,66 +289,63 @@
 			if (fn) {
 				if (pageloaded) {
 					fn();
+					return cb;
 				} else {
 					loadedfn.push(fn);
 				}
 			}
 		};
 		// Executes a function on nodes
-		cb.loop = function (fn) {
+		cb.each = function (fn) {
 			if (typeof fn === 'function') {
 				nodeLoop(function (elm) {
 					// <= IE 8 loses scope so need to apply
 					return fn.apply(elm, arguments);
 				}, nodes);
 			}
+			return cb;
 		};
-		// Find nodes
-		cb.find = function (filter) {
-			if (filter) {
-				var temp = [], i;
-
-				switch (filter) {
-				case 'first':
-					if (nodes.length > 0) {
-						nodes = [nodes.shift()];
-					}
-					break;
-
-				case 'last':
-					if (nodes.length > 0) {
-						nodes = [nodes.pop()];
-					}
-					break;
-
-				case 'odd':
-				case 'even':
-					for (i = (filter === 'odd') ? 0 : 1; i < nodes.length; i += 2) {
-						temp.push(nodes[i]);
-					}
-					nodes = temp;
-					break;
-				}
+		// Find first
+		cb.first = function () {
+			return chibi(nodes.shift());
+		};
+		// Find last
+		cb.last = function () {
+			return chibi(nodes.pop());
+		};
+		// Find odd
+		cb.odd = function () {
+			var odds = [], i;
+			for (i = 0; i < nodes.length; i += 2) {
+				odds.push(nodes[i]);
 			}
-
-			return (nodes.length > 0) ? (nodes.length === 1) ? nodes[0] : nodes : false;
+			return chibi(odds);
+		};
+		// Find even
+		cb.even = function () {
+			var evens = [], i;
+			for (i = 1; i < nodes.length; i += 2) {
+				evens.push(nodes[i]);
+			}
+			return chibi(evens);
 		};
 		// Hide node
 		cb.hide = function () {
 			nodeLoop(function (elm) {
 				elm.style.display = 'none';
 			}, nodes);
+			return cb;
 		};
 		// Show node
 		cb.show = function () {
 			nodeLoop(function (elm) {
 				showCss(elm);
 			}, nodes);
+			return cb;
 		};
 		// Toggle node display
 		cb.toggle = function () {
 			nodeLoop(function (elm) {
-
 				// computeStyle instead of style.display == 'none' catches elements that are hidden via style block
 				if (computeStyle(elm, 'display') === 'none') {
 					showCss(elm);
@@ -325,396 +354,254 @@
 				}
 
 			}, nodes);
+			return cb;
 		};
 		// Remove node
 		cb.remove = function () {
-
 			nodeLoop(function (elm) {
 				// Catch error in unlikely case elm has been removed
 				try {
 					elm.parentNode.removeChild(elm);
 				} catch (e) {}
 			}, nodes);
-
-			// Clear nodes after remove
-			nodes = [];
+			return chibi();
 		};
 		// Get/Set CSS
 		cb.css = function (property, value) {
-
-			var values = [];
-
-			nodeLoop(function (elm) {
-				if (value) {
-					setCss(elm, property, value);
-				} else if (elm.style[cssCamel(property)]) {
-					values.push(elm.style[cssCamel(property)]);
-				} else if (computeStyle(elm, property)) {
-					values.push(computeStyle(elm, property));
-				} else {
-					values.push(null);
+			if (property) {
+				if (value || value === '') {
+					nodeLoop(function (elm) {
+						setCss(elm, property, value);
+					}, nodes);
+					return cb;
 				}
-			}, nodes);
-
-			// Get CSS property: return values
-			if (values.length > 0) {
-				return returnValues(values);
-			}
-		};
-		// Get/Set/Add/Remove class
-		cb.cls = function (classes, action) {
-			var values = [], classarray, classname, search, has, i;
-
-			if (classes) {
-				// Trim any whitespace
-				classarray = classes.split(/\s+/);
-				action = action || 'replace';
-			}
-
-			nodeLoop(function (elm) {
-
-				classname = elm.className;
-
-				if (classes) {
-					switch (action) {
-					case 'add':
-						elm.className = classname + ' ' + classes;
-						break;
-
-					case 'replace':
-						elm.className = classes;
-						break;
-
-					case 'has':
-					case 'toggle':
-					case 'remove':
-						has = true;
-
-						for (i = 0; i < classarray.length; i += 1) {
-
-							search = new RegExp('\\b' + classarray[i] + '\\b', 'g');
-
-							if (action === 'has') {
-								if (!classname.match(search)) {
-									has = false;
-									break;
-								}
-							} else if (action === 'toggle') {
-								elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + ' ' + classarray[i];
-							} else { // replace
-								elm.className = elm.className.replace(search, '');
-							}
-
-						}
-
-						if (action === 'has') {
-							values.push(has);
-						}
-
-						break;
+				if (nodes[0]) {
+					if (nodes[0].style[cssCamel(property)]) {
+						return nodes[0].style[cssCamel(property)];
 					}
-					elm.className = elm.className.replace(/^\s+|\s+$/g, '');
-				} else {
-					values.push(classname);
+					if (computeStyle(nodes[0], property)) {
+						return computeStyle(nodes[0], property);
+					}
 				}
-			}, nodes);
-
-			if (values.length > 0) {
-				return returnValues(values);
 			}
-
 		};
-		// Alias to cb.cls()
+		// Get class(es)
 		cb.getClass = function () {
-			return cb.cls();
-		};
-		// Alias to cb.cls(classes)
-		cb.setClass = function (classes) {
-			return cb.cls(classes);
-		};
-		// Alias to cb.cls(classes, 'add')
-		cb.addClass = function (classes) {
-			return cb.cls(classes, 'add');
-		};
-		// Alias to cb.cls(classes, 'remove')
-		cb.removeClass = function (classes) {
-			return cb.cls(classes, 'remove');
-		};
-		// Alias to cb.cls(classes, 'toggle')
-		cb.toggleClass = function (classes) {
-			return cb.cls(classes, 'toggle');
-		};
-		// Alias to cb.cls(classes, 'toggle')
-		cb.hasClass = function (classes) {
-			return cb.cls(classes, 'has');
-		};
-		// Get/Set innerHTML optionally before/after
-		cb.html = function (value, location) {
-			var values = [], tmpnodes, tmpnode;
-
-			nodeLoop(function (elm) {
-
-				if (location) {
-					// No insertAdjacentHTML support for FF < 8 and IE doesn't allow insertAdjacentHTML table manipulation, so use this instead
-					// Convert string to node. We can't innerHTML on a document fragment
-					tmpnodes = d.createElement('div');
-					tmpnodes.innerHTML = value;
-
-					while ((tmpnode = tmpnodes.lastChild) !== null) {
-						// Catch error in unlikely case elm has been removed
-						try {
-							if (location === 'before') {
-								elm.parentNode.insertBefore(tmpnode, elm);
-							} else if (location === 'after') {
-								elm.parentNode.insertBefore(tmpnode, elm.nextSibling);
-							} else if (location === 'append') {
-								elm.appendChild(tmpnode);
-							} else if (location === 'prepend') {
-								elm.insertBefore(tmpnode, elm.firstChild);
-							}
-						} catch (e) {break; }
-					}
-				} else {
-					if (value) {
-						elm.innerHTML = value;
-					} else {
-						values.push(elm.innerHTML);
-					}
-				}
-			}, nodes);
-
-			if (values.length > 0) {
-				return returnValues(values);
+			if (nodes[0] && nodes[0].className.length > 0) {
+				// Weak IE trim support
+				return nodes[0].className.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '').replace(/\s+/,' ');
 			}
 		};
-		// Alias to cb.html(value, 'before')
+		// Set (replaces) classes
+		cb.setClass = function (classes) {
+			if (classes || classes === '') {
+				nodeLoop(function (elm) {
+					elm.className = classes;
+				}, nodes);
+			}
+			return cb;
+		};
+		// Add class
+		cb.addClass = function (classes) {
+			if (classes) {
+				nodeLoop(function (elm) {
+					elm.className += ' ' + classes;
+				}, nodes);
+			}
+			return cb;
+		};
+		// Remove class
+		cb.removeClass = function (classes) {
+			classHelper(classes, 'remove', nodes);
+			return cb;
+		};
+		// Toggle class
+		cb.toggleClass = function (classes) {
+			classHelper(classes, 'toggle', nodes);
+			return cb;
+		};
+		// Has class
+		cb.hasClass = function (classes) {
+			return classHelper(classes, 'has', nodes);
+		};
+		// Get/set HTML
+		cb.html = function (value) {
+			if (value || value === '') {
+				nodeLoop(function (elm) {
+					elm.innerHTML = value;
+				}, nodes);
+				return cb;
+			}
+			if (nodes[0]) {
+				return nodes[0].innerHTML;
+			}
+		};
+		// Insert HTML before selector
 		cb.htmlBefore = function (value) {
-			return cb.html(value, 'before');
+			insertHtml(value, 'before', nodes);
+			return cb;
 		};
-		// Alias to cb.html(value, 'before')
+		// Insert HTML after selector
 		cb.htmlAfter = function (value) {
-			return cb.html(value, 'after');
+			insertHtml(value, 'after', nodes);
+			return cb;
 		};
-		// Alias to cb.html(value, 'append')
+		// Insert HTML after selector innerHTML
 		cb.htmlAppend = function (value) {
-			return cb.html(value, 'append');
+			insertHtml(value, 'append', nodes);
+			return cb;
 		};
-		// Alias to cb.html(value, 'append')
+		// Insert HTML before selector innerHTML
 		cb.htmlPrepend = function (value) {
-			return cb.html(value, 'prepend');
+			insertHtml(value, 'prepend', nodes);
+			return cb;
 		};
 		// Get/Set HTML attributes
-		cb.attr = function (name, value) {
-			var values = [];
-
-			nodeLoop(function (elm) {
-				if (name) {
-					name = name.toLowerCase();
-
-					switch (name) {
-					// IE < 9 doesn't allow style or class via get/setAttribute so switch. cssText returns prettier CSS anyway
-					case 'style':
-						if (value) {
+		cb.attr = function (property, value) {
+			if (property) {
+				property = property.toLowerCase();
+				// IE < 9 doesn't allow style or class via get/setAttribute so switch. cssText returns prettier CSS anyway
+				if (value || value === '') {
+					nodeLoop(function (elm) {
+						if (property === 'style') {
 							elm.style.cssText = value;
-						} else if (elm.style.cssText) {
-							values.push(elm.style.cssText);
-						} else {
-							values.push(null);
-						}
-						break;
-
-					case 'class':
-						if (value) {
+						} else if (property === 'class') {
 							elm.className = value;
-						} else if (elm.className) {
-							values.push(elm.className);
 						} else {
-							values.push(null);
+							elm.setAttribute(property, value);
 						}
-						break;
-
-					default:
-						if (value) {
-							elm.setAttribute(name, value);
-						} else if (elm.getAttribute(name)) {
-							values.push(elm.getAttribute(name));
-						} else {
-							values.push(null);
+					}, nodes);
+					return cb;
+				}
+				if (nodes[0]) {
+					if (property === 'style') {
+						if (nodes[0].style.cssText) {
+							return nodes[0].style.cssText;
+						}
+					} else if (property === 'class') {
+						if (nodes[0].className) {
+							return nodes[0].className;
+						}
+					} else {
+						if (nodes[0].getAttribute(property)) {
+							return nodes[0].getAttribute(property);
 						}
 					}
 				}
-			}, nodes);
-
-			if (values.length > 0) {
-				return returnValues(values);
 			}
-
 		};
 		// Get/Set form element values
-		cb.val = function (replacement) {
-			var radiogroup = [], values = [], i, j, grouped, active;
-
-			if (typeof replacement === 'string') {
-				replacement = [replacement];
-			}
-
-			nodeLoop(function (elm) {
-
-				if (replacement) {
+		cb.val = function (value) {
+			var values, i, j;
+			if (value || value === '') {
+				nodeLoop(function (elm) {
 					switch (elm.nodeName) {
 					case 'SELECT':
+						if (typeof value === 'string' || typeof value === 'number') {
+							value = [value];
+						}
 						for (i = 0; i < elm.length; i += 1) {
 							// Multiple select
-							for (j = 0; j < replacement.length; j += 1) {
+							for (j = 0; j < value.length; j += 1) {
 								elm[i].selected = '';
-
-								if (elm[i].value === replacement[j]) {
+								if (elm[i].value === value[j]) {
 									elm[i].selected = 'selected';
 									break;
 								}
 							}
 						}
 						break;
-
 					case 'INPUT':
-						switch (elm.type) {
-						case 'checkbox':
-						case 'radio':
-							elm.checked = '';
-
-							for (i = 0; i < replacement.length; i += 1) {
-								if (elm.value === replacement[i]) {
-									elm.checked = 'checked';
-									break;
-								}
-							}
-
-							break;
-						default:
-							elm.value = replacement[0];
-						}
-
-						break;
-
 					case 'TEXTAREA':
 					case 'BUTTON':
-						elm.value = replacement[0];
+						elm.value = value;
 						break;
 					}
+				}, nodes);
 
-				} else {
-					switch (elm.nodeName) {
-					case 'SELECT':
-
-						active = values.length;
-
-						values.push([]);
-
-						for (i = 0; i < elm.length; i += 1) {
-							if (elm[i].selected) {
-								values[active].push(elm[i].value);
-							}
+				return cb;
+			}
+			if (nodes[0]) {
+				switch (nodes[0].nodeName) {
+				case 'SELECT':
+					values = [];
+					for (i = 0; i < nodes[0].length; i += 1) {
+						if (nodes[0][i].selected) {
+							values.push(nodes[0][i].value);
 						}
-
-						switch (values[active].length) {
-						case 0:
-							values[active] = null;
-							break;
-
-						case 1:
-							values[active] = values[active][0];
-							break;
-						}
-
-						break;
-
-					case 'INPUT':
-						switch (elm.type) {
-						case 'checkbox':
-							if (elm.checked) {
-								values.push(elm.value);
-							} else {
-								values.push(null);
-							}
-							break;
-
-						case 'radio':
-
-							grouped = false;
-
-							for (i = 0; i < radiogroup.length; i += 1) {
-								if (radiogroup[i][0] === elm.name) {
-									if (elm.checked) {
-										values[radiogroup[i][1]] = elm.value;
-									}
-									grouped = true;
-								}
-							}
-
-							if (!grouped) {
-								radiogroup.push([elm.name, values.length]);
-
-								if (elm.checked) {
-									values.push(elm.value);
-								} else {
-									values.push(null);
-								}
-							}
-
-							break;
-						// Everything else including shinny new HTML5 input types
-						default:
-							values.push(elm.value);
-						}
-
-						break;
-
-					case 'TEXTAREA':
-					case 'BUTTON':
-						values.push(elm.value);
-						break;
 					}
-
+					return (values.length > 1) ? values : values[0];
+				case 'INPUT':
+				case 'TEXTAREA':
+				case 'BUTTON':
+					return nodes[0].value;
 				}
-
-			}, nodes);
-
-			if (values.length > 0) {
-				return returnValues(values);
+			}
+		};
+		// Return matching checked checkbox or radios
+		cb.check = function (value) {
+			var active, checked = {};
+			if (value || value === '') {
+				nodeLoop(function (elm) {
+					if (elm.nodeName === 'INPUT' && elm.value === value && (elm.type === 'checkbox' || elm.type === 'radio')) {
+						elm.checked = 'checked';
+					}
+				}, nodes);
+				return cb;
+			}
+			if (nodes[0] && nodes[0].nodeName === 'INPUT') {
+				switch (nodes[0].type) {
+				case 'checkbox':
+					if (nodes[0].checked) {
+						return nodes[0].value;
+					}
+					break;
+				case 'radio':
+					nodeLoop(function (elm) {
+						active = elm.name;
+						if (elm.checked) {
+							checked = {name:elm.name,value:elm.value};
+						}
+					}, nodes);
+					// Return checked for first radio group not first radio
+					if (checked.name === active) {
+						return checked.value;
+					}
+					break;
+				}
 			}
 		};
 		// Add event handler
-		cb.on = function (event, fn, clear) {
-
+		cb.on = function (event, fn) {
 			if (selector === w || selector === d) {
 				nodes = [selector];
 			}
-
 			nodeLoop(function (elm) {
 				if (d.addEventListener) {
-					if (clear) {
-						elm.removeEventListener(event, fn, false);
-					} else {
-						elm.addEventListener(event, fn, false);
-					}
+					elm.addEventListener(event, fn, false);
 				} else if (d.attachEvent) {
-
-					if (clear) {
-						elm.detachEvent('on' + event, elm[event + fn]);
-						// Tidy up
-						elm[event + fn] = null;
-					} else {
-						// <= IE 8 loses scope so need to apply, we add this to object so we can detach later (can't detach anonymous functions)
-						elm[event + fn] =  function () { return fn.apply(elm, arguments); };
-
-						elm.attachEvent('on' + event, elm[event + fn]);
-					}
+					// <= IE 8 loses scope so need to apply, we add this to object so we can detach later (can't detach anonymous functions)
+					elm[event + fn] =  function () { return fn.apply(elm, arguments); };
+					elm.attachEvent('on' + event, elm[event + fn]);
 				}
 			}, nodes);
+			return cb;
 		};
 		// Remove event handler
 		cb.off = function (event, fn) {
-			cb.on(event, fn, true);
+			if (selector === w || selector === d) {
+				nodes = [selector];
+			}
+			nodeLoop(function (elm) {
+				if (d.addEventListener) {
+					elm.removeEventListener(event, fn, false);
+				} else if (d.attachEvent) {
+					elm.detachEvent('on' + event, elm[event + fn]);
+					// Tidy up
+					elm[event + fn] = null;
+				}
+			}, nodes);
+			return cb;
 		};
 		// Basic XHR 1, no file support. Shakes fist at IE
 		cb.ajax = function (url, method, callback, nocache, nojsonp) {
@@ -806,14 +693,15 @@
 
 				}
 			}
+			return cb;
 		};
 		// Alias to cb.ajax(url, 'get', callback, nocache, nojsonp)
 		cb.get = function (url, callback, nocache, nojsonp) {
-			cb.ajax(url, 'get', callback, nocache, nojsonp);
+			return cb.ajax(url, 'get', callback, nocache, nojsonp);
 		};
 		// Alias to cb.ajax(url, 'post', callback, nocache)
 		cb.post = function (url, callback, nocache) {
-			cb.ajax(url, 'post', callback, nocache);
+			return cb.ajax(url, 'post', callback, nocache);
 		};
 
 		return cb;
