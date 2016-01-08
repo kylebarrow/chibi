@@ -65,7 +65,7 @@ $(document.getElementsByTagName('p')).hide() // Hides all paragraphs
 ##### A more interesting DOM element selector
 
 ```js
-$($('p').find('odd')).hide() // Hides odd paragraphs
+$($('p')[0]).hide() // Hides first paragraph
 ```
 
 ### Methods
