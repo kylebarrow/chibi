@@ -19,6 +19,8 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks and
 * Chibi's polyfill for `document.querySelectorAll()` is limited to browser CSS support and is not as fast as some dedicated selector engines. This means no `input[type=text]` or `p:nth-child(even)` selectors with IE6. Fortunately modern browser don't need this polyfill.
 * Ancient browsers that support neither `document.querySelectorAll()` nor `window.getComputedStyle` can bugger off.
 
+**Version 3 is a major update with many breaking changes. If it's difficult to embrace change, version 1 is still available [here](https://github.com/kylebarrow/chibi/tree/1.1.5).**
+
 ### Browser Support
 
 Chibi has been tested with and supports the following browsers:
@@ -550,17 +552,12 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 </html>
 ```
 
-
-
-
-
-
 #### $(selector).val(value)
-*Gets or optionally sets the value of a form element selector.*
+*Gets or optionally sets the value of matching form element.*
 
-**val** with no arguments will return either a value string (only one matching form field DOM element found) or array of value strings (more than one matching form field DOM element found).
+**val** with no arguments will return the value string of the first matching form element found. For select lists, Chibi will return the selected option value string, if any. For select lists with multiple selects, Chibi will return an array of selected option value strings, if any.
 
-*value* will set the value of the matching form field DOM elements.
+*value* will set the value of matching form field elements. For select lists, this will select the option matching this value. For select lists with multiple selects, passing an array of values will select all options in the select list matching these values.
 
 
 ```html
@@ -572,17 +569,24 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 <body>
 <form>
 <input type="text" value="Foobar" name="text">
+<select multiple="multiple">
+	<option value="foo">Foo</option>
+	<option value="bar" selected="selected">Bar</option>
+</select>
 </form>
 <script>
 	$('input').val(); // returns the value for all input elements, as there is only one, a string "Foobar"
 	$('input').val('Foo Bar'); // sets the value for all input elements to "Foo Bar"
+	$('select').val(); // returns the selected option value "bar"
+	$('select').val('foo'); // selects the option matching "foo"
+	$('select').val(['foo','bar']); // selects the options matching "foo" or "bar"
 </script>
 </body>
 </html>
 ```
 
-#### $(selector).on(event, listener, clear)
-*Adds an event listener to the selector, optionally clears the event listener (depreciated, use .off to clear events).*
+#### $(selector).on(event, listener)
+*Adds an event listener to the selector.*
 
 **on** adds an event listener to the selector. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
 
@@ -601,7 +605,6 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 	}
 
 	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs
-	$('p').on('click',foo,true); // removes the 'foo' click event listener from all paragraphs
 </script>
 </body>
 </html>

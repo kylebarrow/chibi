@@ -538,39 +538,6 @@
 				}
 			}
 		};
-		// Return matching checked checkbox or radios
-		cb.check = function (value) {
-			var active, checked = {};
-			if (value || value === '') {
-				nodeLoop(function (elm) {
-					if (elm.nodeName === 'INPUT' && elm.value === value && (elm.type === 'checkbox' || elm.type === 'radio')) {
-						elm.checked = 'checked';
-					}
-				}, nodes);
-				return cb;
-			}
-			if (nodes[0] && nodes[0].nodeName === 'INPUT') {
-				switch (nodes[0].type) {
-				case 'checkbox':
-					if (nodes[0].checked) {
-						return nodes[0].value;
-					}
-					break;
-				case 'radio':
-					nodeLoop(function (elm) {
-						active = elm.name;
-						if (elm.checked) {
-							checked = {name:elm.name,value:elm.value};
-						}
-					}, nodes);
-					// Return checked for first radio group not first radio
-					if (checked.name === active) {
-						return checked.value;
-					}
-					break;
-				}
-			}
-		};
 		// Add event handler
 		cb.on = function (event, fn) {
 			if (selector === w || selector === d) {

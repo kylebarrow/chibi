@@ -162,14 +162,6 @@ test('Attribute', function() {
 test('Form', function() {
 	var checkcount = [];
 
-	$('#qunit-fixture input').check('2');
-	$('#qunit-fixture input').each(function(elm){
-		if ($(elm).check()) {
-			checkcount.push($(elm).check())
-		}
-	})
-	deepEqual(checkcount, ['2','2'], 'Set and get checked');
-
 	deepEqual($('select').val(), undefined, 'Get empty select');
 	equal($('#single_select').val(), '2', 'Get select');
 	deepEqual($('#multiple_select').val(), ['1','3'], 'Get multple select');
@@ -313,7 +305,6 @@ asyncTest('Get Ajax form', function() {
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
-	$('#qunit-fixture input').check('1');
 	$('#qunit-fixture input').val('1');
 	$('#qunit-fixture textarea').val('2');
 
@@ -321,7 +312,7 @@ asyncTest('Get Ajax form', function() {
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
 		// Include catch for filter text input in Qunit
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -330,14 +321,13 @@ asyncTest('Get Ajax form with cache control', function() {
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
-	$('#qunit-fixture input').check('1');
 	$('#qunit-fixture input').val('1');
 	$('#qunit-fixture textarea').val('2');
 
 
 	$('form').ajax('mockjax','get',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
@@ -346,14 +336,13 @@ asyncTest('Post Ajax form', function() {
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
-	$('#qunit-fixture input').check('1');
 	$('#qunit-fixture input').val('1');
 	$('#qunit-fixture textarea').val('2');
 
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
 		equal(status, 200, 'Response status');
 	});
 });
@@ -362,14 +351,13 @@ asyncTest('Post Ajax form with cache control', function() {
 	expect( 2 );
 
 	$('#qunit-fixture select').val('1');
-	$('#qunit-fixture input').check('1');
 	$('#qunit-fixture input').val('1');
 	$('#qunit-fixture textarea').val('2');
 
 
 	$('form').ajax('mockjax','post',function(data, status){
 		start();
-		equal(/^number_input=1&checkbox_1=1&radio_group_1=1&radio_group_2=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
+		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
 		equal(status, 200, 'Response status');
 	},true);
 });
