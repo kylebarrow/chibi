@@ -41,6 +41,15 @@ Chibi has been tested with and supports the following browsers:
 * Symbian^3 Browser or higher
 
 Chibi should also work with any other browser that supports `document.querySelectorAll()`.
+
+### Installation
+
+Grab it from [here](https://github.com/kylebarrow/chibi/) or
+
+```shell
+npm install chibijs
+```
+
 ### Using Chibi
 
 Chibi syntax is similar to that pioneered by jQuery: `$(selector).method()`. It intentionally uses the same `$` namespace as jQuery because micro-libraries and grown-up libraries should never mix.
@@ -70,7 +79,7 @@ $($('p')[0]).hide() // Hides first paragraph
 
 ### Methods
 
-Chibi supports method chaining `$(selector).method().anothermethod().evenmoremethods()` of any method not returning a values (string, boolean, etc.).
+Chibi supports method chaining `$(selector).method().anothermethod().evenmoremethods()` of any method not returning a value (string, boolean, etc.).
 
 #### $().ready(handler)
 *Fires handler when the DOM is ready.*
@@ -106,9 +115,9 @@ $().loaded(foo);
 ```
 
 #### $(selector).each(function)
-*Executes a function on each matching DOM element*
+*Executes a function on each matching element*
 
-**each** passes each selector DOM element to the specified function.
+**each** passes each matching element to the specified function.
 
 ```html
 <!DOCTYPE html>
@@ -126,7 +135,7 @@ $().loaded(foo);
 
     $('p').each(foo); // Executes the foo function (sets the element style color to red) on all paragraph elements
     
-    // A smarter way to acheive the above
+    // An alternative way to achieve the above
     $('p').each(function(elm) {
 		$(elm).css('color','red');  
     })
@@ -138,24 +147,24 @@ $().loaded(foo);
 ```
 
 #### $(selector).first()
-*Finds the first matching DOM element.*
+*Finds the first matching element.*
 
-**first** will return an array containing the first matching DOM element, useful when working with crappy browsers like IE6 with weak CSS pseudo support, especially when combined with method chaining.
+**first** will return an array containing the first matching element, useful when working with crappy browsers like IE6 with weak CSS pseudo support, especially when combined with method chaining.
 
 #### $(selector).last()
-*Finds the last matching DOM element.*
+*Finds the last matching element.*
 
-**last** will return an array containing the last matching DOM element.
+**last** will return an array containing the last matching element.
 
 #### $(selector).odd()
-*Finds matching odd DOM elements.*
+*Finds matching odd elements.*
 
-**odd** will return an array containing matching odd DOM elements.
+**odd** will return an array containing matching odd elements.
 
 #### $(selector).even()
-*Finds matching even DOM elements.*
+*Finds matching even elements.*
 
-**even** will return an array containing matching even DOM elements.
+**even** will return an array containing matching even elements.
 
 
 ```html
@@ -180,7 +189,7 @@ $().loaded(foo);
 ```
 
 #### $(selector).hide()
-*Hides matching DOM elements.*
+*Hides matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -199,7 +208,7 @@ $().loaded(foo);
 ```
 
 #### $(selector).show()
-*Shows matching DOM elements.*
+*Shows matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -221,7 +230,7 @@ p {display:none}
 ```
 
 #### $(selector).toggle()
-*Toggles visibility of matching DOM elements.*
+*Toggles visibility of matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -240,7 +249,7 @@ p {display:none}
 ```
 
 #### $(selector).remove()
-*Removes matching DOM elements from the DOM tree.*
+*Removes matching elements from the DOM tree.*
 
 ```html
 <!DOCTYPE html>
@@ -259,11 +268,11 @@ p {display:none}
 ```
 
 #### $(selector).css(property, value)
-*Gets or optionally sets the CSS property for the selector.*
+*Gets or optionally sets the CSS property for matching elements.*
 
-**css** with no *value* will return the CSS property string of the first matching DOM element. **css** will return the computed property value if the property isn't explicitly set which can vary between browsers. For example, an element with no explicit font weight will return 'normal' in Opera and Webkit browsers but '400' in Firefox and Internet Explorer browsers.
+**css** with no *value* will return the CSS property string of the first matching element found. **css** will return the computed property value if the property isn't explicitly set which can vary between browsers. For example, an element with no explicit font weight will return 'normal' in Opera and Webkit browsers but '400' in Firefox and Internet Explorer browsers.
 
-*value* will set the value of the CSS property for all matching DOM elements.
+*value* will set the value of the CSS property for all matching elements.
 
 ```html
 <!DOCTYPE html>
@@ -286,7 +295,7 @@ p {display:none}
 ```
 
 #### $(selector).getClass()
-*Gets class for first matching DOM element.*
+*Gets class for first matching element found.*
 
 ```html
 <!DOCTYPE html>
@@ -300,17 +309,20 @@ p {display:none}
 <script src="chibi-min.js"></script>
 </head>
 <body>
-<p>Foo</p>
+<div class="red">Foo</div>
+<div class="mono">Bar</div>
+<p >Foo</p>
 <p class="mono">Bar</p>
 <script>
-	$('p').getClass(); // returns classes set on all paragraph elements, as there is more than one paragraph element, an array ['', 'mono']
+	$('div').getClass(); // returns 'red', the class of the first div element
+	$('p').getClass(); // returns undefined as the first paragraph element has no class set
 </script>
 </body>
 </html>
 ```
 
 #### $(selector).setClass(class)
-*Sets class for matching DOM elements, replacing any DOM element class with this class.*
+*Sets the class of all matching elements replacing any existing element class with this class.*
 
 ```html
 <!DOCTYPE html>
@@ -327,14 +339,14 @@ p {display:none}
 <p>Foo</p>
 <p class="mono">Bar</p>
 <script>
-	$('p').setClass('red bold'); // sets the class to "red" and "bold" to all paragraph elements, replacing any existing classes
+	$('p').setClass('red bold'); // sets the class to "red" and "bold" for all paragraph elements
 </script>
 </body>
 </html>
 ```
 
 #### $(selector).addClass(class)
-*Adds class for matching DOM elements.*
+*Adds a class to all matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -358,7 +370,7 @@ p {display:none}
 ```
 
 #### $(selector).removeClass(class)
-*Removes class for matching DOM elements.*
+*Removes class from all matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -375,14 +387,14 @@ p {display:none}
 <p>Foo</p>
 <p class="mono">Bar</p>
 <script>
-	$('p').removeClass('mono'); // remove the "mono" class to all paragraph elements
+	$('p').removeClass('mono'); // removes the "mono" class from all paragraph elements
 </script>
 </body>
 </html>
 ```
 
 #### $(selector).toggleClass(class)
-*Toggles class for matching DOM elements.*
+*Toggles class for matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -406,7 +418,7 @@ p {display:none}
 ```
 
 #### $(selector).hasClass(class)
-*Returns true if first matching DOM elements includes the class.*
+*Returns true if first matching element found includes the class.*
 
 ```html
 <!DOCTYPE html>
@@ -420,21 +432,24 @@ p {display:none}
 <script src="chibi-min.js"></script>
 </head>
 <body>
+<div class="red">Foo</div>
+<div class="mono">Bar</div>
 <p>Foo</p>
 <p class="mono">Bar</p>
 <script>
-	$('p').cls('mono'); // returns true if the paragraph element includes the 'mono' class, as there is more than one paragraph element, an array [false, true]
+	$('div').cls('red'); // returns true as the first div element includes the 'red' class
+	$('p').cls('mono'); // returns undefined as the first paragraph element doesn't include the 'mono' class
 </script>
 </body>
 </html>
 ```
 
 #### $(selector).html(html)
-*Gets or optionally sets the inner HTML for matching DOM elements.*
+*Gets or optionally sets the inner HTML of matching elements.*
 
-**html** with no arguments will return the HTML string of the first matching DOM element.
+**html** with no arguments will return the HTML string of the first matching element found.
 
-If the *html* argument is specified, this will replace the inner HTML of matching DOM elements.
+If the *html* argument is specified, this will replace the inner HTML of all matching elements.
 
 ```html
 <!DOCTYPE html>
@@ -446,7 +461,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 <p>Foo</p>
 <p>Bar</p>
 <script>
-	$('p').html(); // returns an inner HTML of all paragraph elements, as there is more than one paragraph element, an array ['Foo','Bar']
+	$('p').html(); // returns an inner HTML "Foo" of the first paragraph element
 	$('p').html('<i>Foobar</i>'); // Sets the inner HTML of all paragraph elements to "<i>Foobar</i>"
 </script>
 </body>
@@ -454,7 +469,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).htmlBefore(value)
-*Inserts html before matching DOM elements.*
+*Inserts html before all matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -473,7 +488,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).htmlAfter(value)
-*Inserts html after matching DOM elements.*
+*Inserts html after all matching elements.*
 
 ```html
 <!DOCTYPE html>
@@ -492,7 +507,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).htmlAppend(value)
-*Inserts html after matching DOM elements inner elements.*
+*Inserts html after all matching elements inner elements.*
 
 ```html
 <!DOCTYPE html>
@@ -511,7 +526,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).htmlPrepend(value)
-*Inserts html before matching DOM elements inner elements.*
+*Inserts html before all matching elements inner elements.*
 
 ```html
 <!DOCTYPE html>
@@ -530,11 +545,11 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).attr(property, value)
-*Gets or optionally sets the property for a selector.*
+*Gets or optionally sets the property for all matching elements.*
 
-**attr** with no arguments will return the property string of the first matching DOM element.
+**attr** with no arguments will return the property string of the first matching element found.
 
-*value* will set the value of the property for all matching DOM elements.
+*value* will set the value of the property for all matching elements.
 
 ```html
 <!DOCTYPE html>
@@ -553,7 +568,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).val(value)
-*Gets or optionally sets the value of matching form element.*
+*Gets or optionally sets the value of matching form elements.*
 
 **val** with no arguments will return the value string of the first matching form element found. For select lists, Chibi will return the selected option value string, if any. For select lists with multiple selects, Chibi will return an array of selected option value strings, if any.
 
@@ -575,20 +590,20 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 </select>
 </form>
 <script>
-	$('input').val(); // returns the value for all input elements, as there is only one, a string "Foobar"
+	$('input').val(); // returns "Foobar"
 	$('input').val('Foo Bar'); // sets the value for all input elements to "Foo Bar"
-	$('select').val(); // returns the selected option value "bar"
+	$('select').val(); // returns "bar", the selected option value 
 	$('select').val('foo'); // selects the option matching "foo"
-	$('select').val(['foo','bar']); // selects the options matching "foo" or "bar"
+	$('select').val(['foo','bar']); // selects the options matching "foo" or "bar" values
 </script>
 </body>
 </html>
 ```
 
 #### $(selector).on(event, listener)
-*Adds an event listener to the selector.*
+*Adds an event listener to all matching elements.*
 
-**on** adds an event listener to the selector. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
+**on** adds an event listener to all matching elements. There is no need to use the HTML event format ('on' + event) as Chibi will automatically prefix the event as required. **on** also supports passing `window` and `document` as the selector.
 
 ```html
 <!DOCTYPE html>
@@ -611,9 +626,9 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 ```
 
 #### $(selector).off(event, listener)
-*Removed an event listener to the selector.*
+*Removed an event listener from all matching elements.*
 
-**off** removed an event listener to the selector. There is no need to use the HTML event format ('off' + event) as Chibi will automatically prefix the event as required. **off** also supports passing `window` and `document` as the selector.
+**off** removed an event listener from all matching elements. There is no need to use the HTML event format ('off' + event) as Chibi will automatically prefix the event as required. **off** also supports passing `window` and `document` as the selector.
 
 ```html
 <!DOCTYPE html>
@@ -629,8 +644,8 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 		// Do awesome
 	}
 
-	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraphs
-	$('p').off('click',foo); // removes the 'foo' click event listener from all paragraphs
+	$('p').on('click',foo); // adds the 'foo' click event listener to all paragraph elements
+	$('p').off('click',foo); // removes the 'foo' click event listener from all paragraph elements
 </script>
 </body>
 </html>
@@ -641,7 +656,7 @@ If the *html* argument is specified, this will replace the inner HTML of matchin
 
 When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
 
-**get** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
+**get** supports JSON as a selector ({name:value}), useful for when you want to send data without using form elements.
 
 For cross-domain requests, **get** uses JSONP by default but this is overridden when *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **get** url.
 
@@ -691,9 +706,9 @@ For cross-domain requests, **get** uses JSONP by default but this is overridden 
 #### $(selector).post(url, callback, nocache)
 *Sends a POST AJAX request, optionally firing a callback with the XHR `responseText` and `status`. Alias of $(selector).ajax with POST method*
 
-When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
+When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching.
 
-**post** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
+**post** supports JSON as a selector ({name:value}), useful for when you want to send data without using form elements.
 
 ```html
 <!DOCTYPE html>
@@ -721,9 +736,9 @@ When *nocache* is true, a `_ts` time stamp is added to the URL to prevent cachin
 #### $(selector).ajax(url, method, callback, nocache, nojsonp)
 *Sends an AJAX request, optionally firing a callback with the XHR `responseText` and `status`*
 
-**ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching, yes, I'm looking at you Android Browser and iOS 6.
+**ajax** uses the GET method if none is specified. When *nocache* is true, a `_ts` time stamp is added to the URL to prevent caching.
 
-**ajax** supports JSON as a selector ({name:value}), useful for when you want to send data without using form field DOM elements.
+**ajax** supports JSON as a selector ({name:value}), useful for when you want to send data without using form elements.
 
 For cross-domain requests, **ajax** uses JSONP by default but this is overridden when *nojsonp* is true. JSONP requests will apply any *callback* to `callback=?` or similar in the **ajax** url. The *method* is obviously always `GET` for JSONP requests.
 
