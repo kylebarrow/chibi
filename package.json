@@ -1,27 +1,38 @@
 {
-  "name": "chibijs",
-  "main": "chibi.js",
-  "version": "3.0.2",
-  "author": "Kyle Barrow",
-  "description": "A tiny JavaScript micro-library",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/kylebarrow/chibi.git"
-  },
-  "homepage": "https://github.com/kylebarrow/chibi",
-  "license": "MIT",
-  "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-notify": "^2.2.0",
-    "gulp-qunit": "^1.3.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^1.5.1",
-    "jshint": "^2.8.0",
-    "qunitjs": "^1.20.0"
-  },
-  "engines": {
-    "node": "4.2.x"
-  }
+	"name": "chibijs",
+	"version": "3.0.3",
+	"description": "A tiny JavaScript micro-library",
+	"keywords": [
+		"browser",
+		"chibi",
+		"dom",
+		"library",
+		"microlibrary"
+	],
+	"homepage": "https://github.com/kylebarrow/chibi",
+	"bugs": {
+		"url": "https://github.com/kylebarrow/chibi/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Kyle Barrow",
+		"email": "kyle@barrow.io",
+		"url": "https://barrow.io"
+	},
+	"main": "chibi-min.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kylebarrow/chibi.git"
+	},
+	"devDependencies": {
+		"gulp": "^3.9.0",
+		"gulp-jshint": "^2.0.0",
+		"gulp-notify": "^2.2.0",
+		"gulp-qunit": "^1.3.0",
+		"gulp-rename": "^1.2.2",
+		"gulp-replace": "^0.5.4",
+		"gulp-uglify": "^1.5.1",
+		"jshint": "^2.8.0",
+		"qunitjs": "^1.20.0"
+	}
 }

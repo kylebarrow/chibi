@@ -1,16 +1,7 @@
 {
   "name": "chibi",
-  "main": "chibi.js",
-  "version": "3.0.2",
-  "homepage": "https://github.com/kylebarrow/chibi",
-  "authors": [
-    "Kyle Barrow"
-  ],
   "description": "A tiny JavaScript micro-library",
-  "keywords": [
-    "javascript",
-    "microlibrary"
-  ],
+  "main": "chibi-min.js",
   "license": "MIT",
   "ignore": [
     "node_modules",
@@ -18,5 +9,20 @@
     ".*",
     "gulpfile.js",
     "package.json"
-  ]
+  ],
+  "keywords": [
+	"browser",
+	"chibi",
+	"dom",
+	"library",
+	"microlibrary"
+  ],
+  "authors": [
+  	"Kyle Barrow <kyle@barrow.io> (https://barrow.io)"
+  ],
+  "homepage": "https://github.com/kylebarrow/chibi",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kylebarrow/chibi.git"
+  }
 }

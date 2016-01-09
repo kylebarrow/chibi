@@ -1,4 +1,4 @@
-# Chibi v3.0.2
+# Chibi v3.0.3
 
 #### A tiny JavaScript micro-library
 
