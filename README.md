@@ -1,4 +1,4 @@
-# Chibi v3.0.1
+# Chibi v3.0.2
 
 #### A tiny JavaScript micro-library
 
@@ -287,7 +287,7 @@ p {display:none}
 <p>Foo</p>
 <p class="bold">Bar</p>
 <script>
-	$('p').css('font-weight'); // returns the "font-weight" on all paragraph elements, as there is more than one paragraph element, an array ['normal','900']
+	$('p').css('font-weight'); // returns the "font-weight" of the first paragraph element
 	$('p').css('color','red'); // sets all paragraph elements color to red
 </script>
 </body>
