@@ -1,4 +1,4 @@
-/*!chibi 3.0.4, Copyright 2012-2016 Kyle Barrow, released under MIT license */
+/*!chibi 3.0.5, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
