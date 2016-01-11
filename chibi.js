@@ -1,4 +1,4 @@
-/*!chibi 3.0.3, Copyright 2012-2016 Kyle Barrow, released under MIT license */
+/*!chibi 3.0.4, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -582,14 +582,13 @@
 				jsonpcallback = 'chibi' + (+new Date()) + (jsonpcount += 1),
 				script;
 
-
 			if (query && (type === 'GET' || type === 'DELETE')) {
 				url += (url.indexOf('?') === -1) ? '?' + query : '&' + query;
 				query = null;
 			}
 
 			// JSONP if cross domain url
-			if (!nojsonp && domain && w.location.host !== domain[1]) {
+			if (type === 'GET' && !nojsonp && domain && w.location.host !== domain[1]) {
 
 				if (nocache) {
 					url += (url.indexOf('?') === -1) ? '?' + timestamp : '&' + timestamp;

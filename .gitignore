@@ -1,3 +1,4 @@
 node_modules
 npm-debug.log
+tests/server.js
 tests/sandpit.html
