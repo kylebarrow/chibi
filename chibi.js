@@ -1,4 +1,4 @@
-/*!chibi 3.0.5, Copyright 2012-2016 Kyle Barrow, released under MIT license */
+/*!chibi 3.0.6, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -488,6 +488,12 @@
 						}
 					}
 				}
+			}
+		};
+		// Get/Set HTML data property
+		cb.data = function (key, value) {
+			if (key) {
+				return cb.attr('data-'+key, value);
 			}
 		};
 		// Get/Set form element values

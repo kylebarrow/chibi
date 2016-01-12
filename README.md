@@ -1,4 +1,4 @@
-# Chibi v3.0.5
+# Chibi v3.0.6
 
 #### A tiny JavaScript micro-library
 
@@ -8,7 +8,7 @@ Working on something a wee bit more complex? Unlike fat, grown-up frameworks and
 
 ### The sweet, juicy bits
 
-* Chibi is really tiny: 6KB minified, 3KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
+* Chibi is really tiny: 7KB minified, 3KB gzipped, small enough to stick inline on single page web apps, saving an extra HTTP request.
 * Supports modern desktop and mobile browsers including Chrome, Firefox, Internet Explorer, Opera and Safari (see Browser Support below).
 * Even supports creaky old browsers like IE6, I don't know why you would do this.
 * No animation cruft, instead use CSS transitions like a nice person.
@@ -547,7 +547,7 @@ If the *html* argument is specified, this will replace the inner HTML of all mat
 #### $(selector).attr(property, value)
 *Gets or optionally sets the property for all matching elements.*
 
-**attr** with no arguments will return the property string of the first matching element found.
+**attr** with no value argument will return the property string of the first matching element found.
 
 *value* will set the value of the property for all matching elements.
 
@@ -560,8 +560,32 @@ If the *html* argument is specified, this will replace the inner HTML of all mat
 <body>
 <p><a href="http://en.wikipedia.org/wiki/Foobar">Foobar</a></p>
 <script>
-	$('a').attr('href'); // returns the "href" property for all link elements, as there is only one, a string "http://en.wikipedia.org/wiki/Foobar"
+	$('a').attr('href'); // returns the "href" property value "http://en.wikipedia.org/wiki/Foobar" of the first link element
 	$('a').attr('target','_blank'); // sets the "target" property for all link elements to "_blank"
+</script>
+</body>
+</html>
+```
+
+#### $(selector).data(key, value)
+*Gets or optionally sets the data attribute for all matching elements.*
+
+**data** with no value argument will return the data key value of the first matching element found.
+
+*value* will set the value of the data key for all matching elements.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<p data-test="foo"></p>
+<p data-test="bar"></p>
+<script>
+	$('p').data('test'); // returns "foo" for data key "test" of first paragraph element found
+	$('p').data('test','bar'); // sets the date key "test" value "bar" on all matching paragraph elements
 </script>
 </body>
 </html>

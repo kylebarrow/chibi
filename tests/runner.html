@@ -159,6 +159,12 @@ test('Attribute', function() {
 	equal($('#attr').attr('href'), 'http://barrow.io' ,'Attribute');
 });
 
+test('Data', function() {
+	$('#data').data('test','foobar');
+	equal($('#data').data('test'), 'foobar' ,'Data attribute');
+});
+
+
 test('Form', function() {
 	var checkcount = [];
 
@@ -487,6 +493,7 @@ test('Remove event', function() {
 <div id="css"></div>
 <div id="html"><b></b></div>
 <a id="attr"></a>
+<a id="data"></a>
 <div id="cls"></div>
 <input type="text" id="on" style="border:0">
 
