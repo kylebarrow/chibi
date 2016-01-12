@@ -1,4 +1,4 @@
-# Chibi v3.0.6
+# Chibi v3.0.7
 
 #### A tiny JavaScript micro-library
 
@@ -619,6 +619,33 @@ If the *html* argument is specified, this will replace the inner HTML of all mat
 	$('select').val(); // returns "bar", the selected option value 
 	$('select').val('foo'); // selects the option matching "foo"
 	$('select').val(['foo','bar']); // selects the options matching "foo" or "bar" values
+</script>
+</body>
+</html>
+```
+
+#### $(selector).checked(boolean)
+*Gets or optionally sets checked status of checkbox or radio elements.*
+
+**checked** with no arguments will return the checked boolean of the first matching element found.
+
+*boolean* will set the checked status of matching checkbox or radio elements.
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<script src="chibi-min.js"></script>
+</head>
+<body>
+<form>
+<input type="checkbox" value="Foobar" name="chk">
+</form>
+<script>
+	$('input').checked(true); // checks the checkbox
+	$('input').checked(); // returns true
+	$('input').checked(false); // unchecks the checkbox
+	$('input').checked(); // returns false
 </script>
 </body>
 </html>

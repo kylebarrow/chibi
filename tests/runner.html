@@ -187,6 +187,13 @@ test('Form', function() {
 		equal($(elm).val(), '1', 'Set and get input');
 	})
 
+	$('input').checked(true);
+	deepEqual($('#checkbox_1').checked(), true, 'Checkbox is checked');
+	deepEqual($('#radio_group_1_1').checked(), true, 'Radio is checked');
+	$('input').checked(false);
+	deepEqual($('#checkbox_1').checked(), false, 'Checkbox is unchecked');
+	deepEqual($('#radio_group_1_1').checked(), false, 'Radio is unchecked');
+
 });
 
 
@@ -474,10 +481,10 @@ test('Remove event', function() {
 	</form>
 	<form>
 		<input type="number" name="number_input" value="1">
-		<input type="checkbox" value="1" name="checkbox_1">
+		<input type="checkbox" value="1" name="checkbox_1" id="checkbox_1">
 		<input type="checkbox" value="2" name="checkbox_2">
 		<input type="checkbox" value="3" name="checkbox_3">
-		<input type="radio" value="1" name="radio_group_1">
+		<input type="radio" value="1" name="radio_group_1" id="radio_group_1_1">
 		<input type="radio" value="2" name="radio_group_1">
 		<input type="radio" value="1" name="radio_group_2">
 		<input type="text" value="" name="text_input">
@@ -496,6 +503,5 @@ test('Remove event', function() {
 <a id="data"></a>
 <div id="cls"></div>
 <input type="text" id="on" style="border:0">
-
 </body>
 </html>

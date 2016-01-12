@@ -1,4 +1,4 @@
-/*!chibi 3.0.6, Copyright 2012-2016 Kyle Barrow, released under MIT license */
+/*!chibi 3.0.7, Copyright 2012-2016 Kyle Barrow, released under MIT license */
 (function () {
 	'use strict';
 
@@ -542,6 +542,20 @@
 				case 'BUTTON':
 					return nodes[0].value;
 				}
+			}
+		};
+		// Return matching checked checkbox or radios
+		cb.checked = function (check) {
+			if (typeof check === 'boolean') {
+				nodeLoop(function (elm) {
+					if (elm.nodeName === 'INPUT' && (elm.type === 'checkbox' || elm.type === 'radio')) {
+						elm.checked = check;
+					}
+				}, nodes);
+				return cb;
+			}
+			if (nodes[0] && nodes[0].nodeName === 'INPUT' && (nodes[0].type === 'checkbox' || nodes[0].type === 'radio')) {
+				return (!!nodes[0].checked);
 			}
 		};
 		// Add event handler
