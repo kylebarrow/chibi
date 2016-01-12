@@ -568,9 +568,9 @@ If the *html* argument is specified, this will replace the inner HTML of all mat
 ```
 
 #### $(selector).data(key, value)
-*Gets or optionally sets the data attribute for all matching elements.*
+*Gets or optionally sets the data key value for all matching elements.*
 
-**data** with no value argument will return the data key value of the first matching element found.
+**data** with no *value* argument will return the data key value of the first matching element found.
 
 *value* will set the value of the data key for all matching elements.
 
@@ -585,7 +585,7 @@ If the *html* argument is specified, this will replace the inner HTML of all mat
 <p data-test="bar"></p>
 <script>
 	$('p').data('test'); // returns "foo" for data key "test" of first paragraph element found
-	$('p').data('test','bar'); // sets the date key "test" value "bar" on all matching paragraph elements
+	$('p').data('test','foobar'); // sets the date key "test" value to "foobar" on all matching paragraph elements
 </script>
 </body>
 </html>
