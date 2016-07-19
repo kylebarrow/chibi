@@ -160,17 +160,18 @@
 
 	// Class helper
 	function classHelper(classes, action, nodes) {
-		var classarray, search, i, has = false;
+		var classarray, search, replace, i, has = false;
 		if (classes) {
 			// Trim any whitespace
 			classarray = classes.split(/\s+/);
 			nodeLoop(function (elm) {
 				for (i = 0; i < classarray.length; i += 1) {
 					search = new RegExp('\\b' + classarray[i] + '\\b', 'g');
+					replace = new RegExp(' *' + classarray[i] + '\\b', 'g');
 					if (action === 'remove') {
-						elm.className = elm.className.replace(search, '');
+						elm.className = elm.className.replace(replace, '');
 					} else if (action === 'toggle') {
-						elm.className = (elm.className.match(search)) ? elm.className.replace(search, '') : elm.className + ' ' + classarray[i];
+						elm.className = (elm.className.match(search)) ? elm.className.replace(replace, '') : elm.className + ' ' + classarray[i];
 					} else if (action === 'has') {
 						if (elm.className.match(search)) {
 							has = true;
