@@ -77,11 +77,13 @@
 		return encodeURIComponent(name).replace(/%20/g, '+') + '=' + encodeURIComponent(value).replace(/%20/g, '+');
 	}
 
-	// Set CSS, important to wrap in try to prevent error thown on unsupported property
+	// Set CSS, important to wrap in try to prevent error thrown on unsupported property
 	function setCss(elm, property, value) {
 		try {
 			elm.style[cssCamel(property)] = value;
-		} catch (e) {}
+		} catch (e) {
+			console.error('Could not set css style property "' + property + '".');
+		}
 	}
 
 	// Show CSS
