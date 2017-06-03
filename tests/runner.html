@@ -48,95 +48,98 @@ window.XMLHttpRequest = function() {
 
 QUnit.config.reorder = false;
 
-asyncTest('Ready', function() {
-	expect( 1 );
+QUnit.test('Ready', function(assert) {
+	var done = assert.async();
+	assert.expect( 1 );
 
   	function readytest()
 	{
-		ok(true, 'DOM ready');
-		start();
+		assert.ok(true, 'DOM ready');
+		done();
 	}
 
 	$().ready(readytest);
 });
 
-asyncTest('Loaded', function() {
-	expect( 1 );
+
+QUnit.test('Loaded', function(assert) {
+	var done = assert.async();
+	assert.expect( 1 );
 
   	function loadedtest()
 	{
-		ok(true, 'Page loaded');
-		start();
+		assert.ok(true, 'Page loaded');
+		done();
 	}
 
 	$().loaded(loadedtest);
 });
 
 
-test('Selector', function() {
-	equal($('i').length, 5, 'All elements');
-	equal($('i').first()[0].innerHTML, 'Element 1', 'Find first element');
-	equal($('i').odd().length, 3, 'Find odd elements');
-	equal($('i').even().length, 2, 'Find even elements');
-	equal($('i').last()[0].innerHTML, 'Element 5', 'Find last element');
+QUnit.test('Selector', function(assert) {
+	assert.equal($('i').length, 5, 'All elements');
+	assert.equal($('i').first()[0].innerHTML, 'Element 1', 'Find first element');
+	assert.equal($('i').odd().length, 3, 'Find odd elements');
+	assert.equal($('i').even().length, 2, 'Find even elements');
+	assert.equal($('i').last()[0].innerHTML, 'Element 5', 'Find last element');
 });
 
 
 
-test('Each', function() {
+QUnit.test('Each', function(assert) {
 	$("i").each(function(e){ e.style.color = "red" });
 
 	var firstcolor  = $('i').first()[0].style.color;
 	var lastcolor  = $('i').last()[0].style.color;
 
-	equal( (firstcolor === 'red' || firstcolor === '#ff0000'), true, 'Each start');
-	equal( (lastcolor === 'red' || lastcolor === '#ff0000'), true, 'Each end');
+	assert.equal( (firstcolor === 'red' || firstcolor === '#ff0000'), true, 'Each start');
+	assert.equal( (lastcolor === 'red' || lastcolor === '#ff0000'), true, 'Each end');
 });
-//
 
-test('Visibility', function() {
+
+QUnit.test('Visibility', function(assert) {
 	$('#visible').hide();
-	equal($('#visible')[0].style.display, 'none', 'Hide');
+	assert.equal($('#visible')[0].style.display, 'none', 'Hide');
 
 	$('#hidden').show();
-	equal($('#hidden')[0].style.display, '', 'Show');
+	assert.equal($('#hidden')[0].style.display, '', 'Show');
 
 	$('#hidden').toggle();
-	equal($('#hidden')[0].style.display, 'none', 'Toogle');
+	assert.equal($('#hidden')[0].style.display, 'none', 'Toogle');
 });
 
-test('Remove', function() {
+QUnit.test('Remove', function(assert) {
 	$('#remove').remove();
-	equal($('#remove').length, 0, 'Remove');
+	assert.equal($('#remove').length, 0, 'Remove');
 });
 
-test('Style', function() {
+QUnit.test('Style', function(assert) {
 	$('#css').css('font-family','monospace');
-	equal($('#css')[0].style.fontFamily, 'monospace', 'Set CSS');
-	equal($('#css').css('font-family'), 'monospace', 'Get CSS');
+	assert.equal($('#css')[0].style.fontFamily, 'monospace', 'Set CSS');
+	assert.equal($('#css').css('font-family'), 'monospace', 'Get CSS');
 });
 
-test('Class', function() {
+QUnit.test('Class', function(assert) {
 	$('#cls').setClass(' bolder  ');
-	equal($('#cls').getClass(), 'bolder'  ,'Set class via alias');
+	assert.equal($('#cls').getClass(), 'bolder'  ,'Set class via alias');
 
 	$('#cls').addClass('bold   ');
-	equal($('#cls').getClass(), 'bolder bold'  ,'Add class via alias');
+	assert.equal($('#cls').getClass(), 'bolder bold'  ,'Add class via alias');
 
 	$('#cls').removeClass('bold');
-	equal($('#cls').getClass(), 'bolder'  ,'Remove class via alias');
+	assert.equal($('#cls').getClass(), 'bolder'  ,'Remove class via alias');
 
 	$('#cls').addClass('    red ');
 	$('#cls').toggleClass('bolder');
-	equal($('#cls').getClass(), 'red'  ,'Toggle class via alias');
+	assert.equal($('#cls').getClass(), 'red'  ,'Toggle class via alias');
 
 	$('#cls').addClass('bolder');
 
-	equal($('#cls').hasClass('bolder'), true  ,'Has class (true) via alias');
-	equal($('#cls').hasClass('bold'), false  ,'Has class (false) via alias');
+	assert.equal($('#cls').hasClass('bolder'), true  ,'Has class (true) via alias');
+	assert.equal($('#cls').hasClass('bold'), false  ,'Has class (false) via alias');
 });
 
-test('HTML', function() {
+QUnit.test('HTML', function(assert) {
 	// Fix for IE sticking line breaks on insert after
 	var linebreaks = new RegExp('(\r\n|\n|\r)', 'gm');
 
@@ -145,177 +148,190 @@ test('HTML', function() {
 	$('#html b').htmlAppend('<i></i>');
 	$('#html b').htmlPrepend('<sup></sup>');
 
-	equal($('#html').html().toLowerCase().replace(linebreaks,''), '<p></p><b><sup></sup><i></i></b><div></div>'  ,'HTML aliases');
+	assert.equal($('#html').html().toLowerCase().replace(linebreaks,''), '<p></p><b><sup></sup><i></i></b><div></div>'  ,'HTML aliases');
 
 });
 
-test('Attribute', function() {
+QUnit.test('Attribute', function(assert) {
 	$('#attr').attr('style','font-family:monospace');
 	$('#attr').attr('class','red');
 	$('#attr').attr('href','http://barrow.io');
 
-	equal($('#attr').css('font-family'), 'monospace' ,'Style attribute');
-	equal($('#attr').getClass(), 'red' ,'Class attribute');
-	equal($('#attr').attr('href'), 'http://barrow.io' ,'Attribute');
+	assert.equal($('#attr').css('font-family'), 'monospace' ,'Style attribute');
+	assert.equal($('#attr').getClass(), 'red' ,'Class attribute');
+	assert.equal($('#attr').attr('href'), 'http://barrow.io' ,'Attribute');
 });
 
-test('Data', function() {
+QUnit.test('Data', function(assert) {
 	$('#data').data('test','foobar');
-	equal($('#data').data('test'), 'foobar' ,'Data attribute');
+	assert.equal($('#data').data('test'), 'foobar' ,'Data attribute');
 });
 
 
-test('Form', function() {
+QUnit.test('Form', function(assert) {
 	var checkcount = [];
 
-	deepEqual($('select').val(), undefined, 'Get empty select');
-	equal($('#single_select').val(), '2', 'Get select');
-	deepEqual($('#multiple_select').val(), ['1','3'], 'Get multple select');
+	assert.deepEqual($('select').val(), undefined, 'Get empty select');
+	assert.equal($('#single_select').val(), '2', 'Get select');
+	assert.deepEqual($('#multiple_select').val(), ['1','3'], 'Get multple select');
 
 	$('#single_select').val('1');
-	deepEqual($('#single_select').val(), '1', 'Set select');
+	assert.deepEqual($('#single_select').val(), '1', 'Set select');
 
 	$('#multiple_select').val(['2','3']);
-	deepEqual($('#multiple_select').val(), ['2','3'], 'Set multple select');
+	assert.deepEqual($('#multiple_select').val(), ['2','3'], 'Set multple select');
 
 	$('#qunit-fixture textarea').val('1');
-	equal($('#qunit-fixture textarea').val(), '1' ,'Get and set textarea');
+	assert.equal($('#qunit-fixture textarea').val(), '1' ,'Get and set textarea');
 
 	$('#qunit-fixture input').val('1');
 
 	$('#qunit-fixture input').each(function(elm){
-		equal($(elm).val(), '1', 'Set and get input');
+		assert.equal($(elm).val(), '1', 'Set and get input');
 	})
 
 	$('input').checked(true);
-	deepEqual($('#checkbox_1').checked(), true, 'Checkbox is checked');
-	deepEqual($('#radio_group_1_1').checked(), true, 'Radio is checked');
+	assert.deepEqual($('#checkbox_1').checked(), true, 'Checkbox is checked');
+	assert.deepEqual($('#radio_group_1_1').checked(), true, 'Radio is checked');
 	$('input').checked(false);
-	deepEqual($('#checkbox_1').checked(), false, 'Checkbox is unchecked');
-	deepEqual($('#radio_group_1_1').checked(), false, 'Radio is unchecked');
+	assert.deepEqual($('#checkbox_1').checked(), false, 'Checkbox is unchecked');
+	assert.deepEqual($('#radio_group_1_1').checked(), false, 'Radio is unchecked');
 
 });
 
 
-asyncTest('Get Ajax JSON ', function() {
-	expect( 2 );
+QUnit.test('Get Ajax JSON ', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).ajax('mockjax','get',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Get JSON');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Get JSON');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
 
-asyncTest('Get Ajax JSON with cache control', function() {
-	expect( 2 );
+QUnit.test('Get Ajax JSON with cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'1',bar:'2'}).ajax('mockjax','get',function(data, status){
-		start();
-		equal(/^foo=1&bar=2&_ts=[0-9]*$/.test(data), true ,'Get JSON with cache control');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(/^foo=1&bar=2&_ts=[0-9]*$/.test(data), true ,'Get JSON with cache control');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
-asyncTest('Get Ajax JSON with no query and cache control', function() {
-	expect( 2 );
+QUnit.test('Get Ajax JSON with no query and cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({}).ajax('mockjax','get',function(data, status){
-		start();
-		equal(/^_ts=[0-9]*$/.test(data), true ,'Get JSON with no query and with cache control');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(/^_ts=[0-9]*$/.test(data), true ,'Get JSON with no query and with cache control');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
 
-asyncTest('Post Ajax JSON ', function() {
-	expect( 2 );
+QUnit.test('Post Ajax JSON ', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).ajax('mockjax','post',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Post JSON');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Post JSON');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Post Ajax JSON with cache control', function() {
-	expect( 2 );
+QUnit.test('Post Ajax JSON with cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'1',bar:'2'}).ajax('mockjax','post',function(data, status){
-		start();
+		done();
 
-		equal(data, 'foo=1&bar=2' ,'Post JSON with cache control');
-		equal(status, 200, 'Response status');
+		assert.equal(data, 'foo=1&bar=2' ,'Post JSON with cache control');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
 
-asyncTest('Get Ajax with existing query string', function() {
-	expect( 2 );
+QUnit.test('Get Ajax with existing query string', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).ajax('mockjax?foobar=c','get',function(data, status){
-		start();
-		equal(data, 'foobar=c&foo=a&bar=b' ,'Get Ajax');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foobar=c&foo=a&bar=b' ,'Get Ajax');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Get Ajax with existing query string and cache control', function() {
-	expect( 2 );
+QUnit.test('Get Ajax with existing query string and cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
+
 
 	$({foo:'a',bar:'b'}).ajax('mockjax?foobar=c','get',function(data, status){
-		start();
+		done();
 
-		equal(/^foobar=c&foo=a&bar=b&_ts=[0-9]*$/.test(data), true ,'Get Ajax');
-		equal(status, 200, 'Response status');
+		assert.equal(/^foobar=c&foo=a&bar=b&_ts=[0-9]*$/.test(data), true ,'Get Ajax');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
 
-asyncTest('Post Ajax with existing query string', function() {
-	expect( 2 );
+QUnit.test('Post Ajax with existing query string', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).ajax('mockjax?foobar=d','post',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Post Ajax');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Post Ajax');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
 
-asyncTest('Post Ajax with existing query string and cache control', function() {
-	expect( 2 );
+QUnit.test('Post Ajax with existing query string and cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).ajax('mockjax?foobar=d','post',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Post Ajax');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Post Ajax');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
-asyncTest('Get Ajax JSON via alias', function() {
-	expect( 2 );
+QUnit.test('Get Ajax JSON via alias', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).get('mockjax',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Get JSON via alias');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Get JSON via alias');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Post Ajax JSON via alias', function() {
-	expect( 2 );
+QUnit.test('Post Ajax JSON via alias', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({foo:'a',bar:'b'}).post('mockjax',function(data, status){
-		start();
-		equal(data, 'foo=a&bar=b' ,'Post JSON via alias');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data, 'foo=a&bar=b' ,'Post JSON via alias');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Get Ajax form', function() {
-	expect( 2 );
+QUnit.test('Get Ajax form', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$('#qunit-fixture select').val('1');
 	$('#qunit-fixture input').val('1');
@@ -323,15 +339,16 @@ asyncTest('Get Ajax form', function() {
 
 
 	$('form').ajax('mockjax','get',function(data, status){
-		start();
+		done();
 		// Include catch for filter text input in Qunit
-		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
-		equal(status, 200, 'Response status');
+		assert.equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Get form');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Get Ajax form with cache control', function() {
-	expect( 2 );
+QUnit.test('Get Ajax form with cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$('#qunit-fixture select').val('1');
 	$('#qunit-fixture input').val('1');
@@ -339,14 +356,15 @@ asyncTest('Get Ajax form with cache control', function() {
 
 
 	$('form').ajax('mockjax','get',function(data, status){
-		start();
-		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?&_ts=[0-9]*$/.test(data), true ,'Get form with cache control');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
-asyncTest('Post Ajax form', function() {
-	expect( 2 );
+QUnit.test('Post Ajax form', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$('#qunit-fixture select').val('1');
 	$('#qunit-fixture input').val('1');
@@ -354,14 +372,15 @@ asyncTest('Post Ajax form', function() {
 
 
 	$('form').ajax('mockjax','post',function(data, status){
-		start();
-		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form');
+		assert.equal(status, 200, 'Response status');
 	});
 });
 
-asyncTest('Post Ajax form with cache control', function() {
-	expect( 2 );
+QUnit.test('Post Ajax form with cache control', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$('#qunit-fixture select').val('1');
 	$('#qunit-fixture input').val('1');
@@ -369,90 +388,74 @@ asyncTest('Post Ajax form with cache control', function() {
 
 
 	$('form').ajax('mockjax','post',function(data, status){
-		start();
-		equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(/^number_input=1&text_input=1&single_select=1&multiple_select%5B%5D=1&textarea=2(&filter=.*)?$/.test(data), true ,'Post form with cache control');
+		assert.equal(status, 200, 'Response status');
 	},true);
 });
 
-asyncTest('JSONP Ajax', function() {
-	expect( 2 );
+QUnit.test('JSONP Ajax', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 
 	$().ajax('https://api.github.com/users/kylebarrow/repos?sort=created&direction=asc&callback=?','get',function(data, status){
 
-		start();
-		equal(data.data[0].full_name, 'kylebarrow/chibi' ,'JSONP ajax');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data.data[0].full_name, 'kylebarrow/chibi' ,'JSONP ajax');
+		assert.equal(status, 200, 'Response status');
 
 	},false);
 
 });
 
-asyncTest('JSONP Ajax JSON', function() {
-	expect( 2 );
+QUnit.test('JSONP Ajax JSON', function(assert) {
+	var done = assert.async();
+	assert.expect( 2 );
 
 	$({sort: "created", direction: "asc", callback: "?"}).ajax('https://api.github.com/users/kylebarrow/repos','get',function(data, status){
 
-		start();
-		equal(data.data[0].url, 'https://api.github.com/repos/kylebarrow/chibi' ,'JSONP ajax with JSON');
-		equal(status, 200, 'Response status');
+		done();
+		assert.equal(data.data[0].url, 'https://api.github.com/repos/kylebarrow/chibi' ,'JSONP ajax with JSON');
+		assert.equal(status, 200, 'Response status');
 
 	},false);
 
 });
 
+QUnit.test('Add/remove event', function(assert) {
+	assert.expect( 3 );
 
-function evented(e) {
-	$('#on').val("foobar");
+	function evented() {
+		var done = assert.async();
+		$('#on').val("foobar");
 
-	start();
-	ok(true, 'Event added');
-}
-
-asyncTest('Add event', function() {
-	expect( 1 );
+		done();
+		assert.ok(true, 'Event added');
+	}
 
 	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
 		$('#on').on('focus',evented);
 		$('#on')[0].focus();
-
-	}
-	else
-	{
-		$('#on').on('click',evented);
-		$('#on')[0].click();
-	}
-});
-
-// This needs to be test not asyncTest
-
-test('Event actioned', function() {
-	equal($('#on').val(), 'foobar' ,'Event actioned');
-});
-
-test('Remove event', function() {
-
-
-
-	if(window.constructor &&  window.constructor.prototype && window.constructor.prototype.focus) {
+		assert.equal($('#on').val(), 'foobar' ,'Event actioned');
 		$('#on')[0].blur();
 		$('#on').off('focus',evented);
 		$('#on').val('');
 		$('#on')[0].focus();
 		$('#on')[0].blur();
+		assert.equal($('#on').val(), '' ,'Event removed');
 	}
 	else
 	{
+		$('#on').on('click',evented);
+		$('#on')[0].click();
+		assert.equal($('#on').val(), 'foobar' ,'Event actioned');
 		$('#on').off('click',evented);
 		$('#on').val('');
 		$('#on')[0].click();
+		assert.equal($('#on').val(), '' ,'Event removed');
 	}
-
-	equal($('#on').val(), '' ,'Event removed');
 });
-
-
 
 </script>
 </head>

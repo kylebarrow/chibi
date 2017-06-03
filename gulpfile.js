@@ -1,5 +1,4 @@
 var gulp = require('gulp'),
-	notify = require('gulp-notify'),
 	replace = require('gulp-replace'),
 	jshint = require('gulp-jshint'),
 	rename = require('gulp-rename'),
@@ -14,7 +13,6 @@ var paths = {
 };
 
 var handleError = function(err) {
-	notify().write(err);
 	process.exit(1);
 }
 
@@ -39,9 +37,7 @@ gulp.task('lint', function() {
 gulp.task('compress', function() {
 	gulp.src(paths.source)
 		.pipe(rename('chibi-min.js'))
-		.pipe(uglify({
-			preserveComments: 'some'
-		}))
+		.pipe(uglify({output: {comments: /^!/i}}))
 		.pipe(gulp.dest(''));
 });
 
