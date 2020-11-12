@@ -3,7 +3,7 @@
 //	'use strict';
 
 	var readyfn = [],
-		loadedfn = [2, 3],
+		loadedfn = [2, 3, 4],
 		domready = true,
 		pageloaded = false,
 		jsonpcount = 0,
