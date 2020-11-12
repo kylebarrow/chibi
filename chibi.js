@@ -4,7 +4,7 @@
 
 	var readyfn = [],
 		loadedfn = [],
-		domready = false,
+		domready = true,
 		pageloaded = false,
 		jsonpcount = 0,
 		d = document,
